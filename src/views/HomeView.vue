@@ -1,9 +1,16 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import ParliamentChart from '@/components/charts/ParliamentChart.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <ParliamentChart></ParliamentChart>
   </main>
 </template>
+
+<style scoped>
+main {
+  padding: 1rem;
+  box-sizing: border-box;
+}
+</style>
