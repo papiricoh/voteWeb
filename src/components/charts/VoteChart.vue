@@ -27,6 +27,12 @@
             againstPercentage() {
                 return (this.against / this.total) * 100;
             },
+            favourSimplePercentage() {
+                return (this.favour / (this.favour + this.against)) * 100;
+            },
+            againstSimplePercentage() {
+                return (this.against / (this.favour + this.against)) * 100;
+            }
         },
     };
 </script>
@@ -36,6 +42,10 @@
         <div class="vote_container">
             <div class="favour_votes" :style="'width: ' + favourPercentage + '%;'"></div>
             <div class="against_votes" :style="'width: ' + againstPercentage + '%;'"></div>
+        </div>
+        <div class="vote_container">
+            <div class="favour_votes" :style="'width: ' + favourSimplePercentage + '%;'"></div>
+            <div class="against_votes" :style="'width: ' + againstSimplePercentage + '%;'"></div>
         </div>
         <div class="vote_data_c">
             <span>{{ favour }}</span>

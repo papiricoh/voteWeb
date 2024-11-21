@@ -9,6 +9,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <div class="nav_section">
           <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/vote">Votacion</RouterLink>
 
         </div>
         
@@ -26,6 +27,8 @@ nav {
   gap: 1rem;
   height: 100vh;
   background-color: var(--rich-black);
+  position: fixed;
+  width: 16vw;
 }
 
 .nav_section {

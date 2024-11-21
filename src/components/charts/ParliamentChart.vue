@@ -32,7 +32,7 @@
               data: [
                 ['Partido A', 100, '#FF0000', 'A'],
                 ['Partido B', 80, '#0000FF', 'B'],
-                ['Partido C', 60, '#00FF00', 'C'],
+                ['Partido C', 60, '#00AA00', 'C'],
                 ['Partido D', 40, '#FFFF00', 'D'],
                 ['Partido E', 20, '#FF00FF', 'E'],
               ],
