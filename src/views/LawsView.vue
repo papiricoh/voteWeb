@@ -6,6 +6,12 @@
   export default {
     data() {
       return {
+        user: {
+          firstName: 'John',
+          lastName: 'Doe',
+          username: 'johndoe',
+          perms: 4
+        },
         laws: [
           {
             title: 'Ley de la gravedad',
@@ -93,6 +99,7 @@
           <div v-else class="law_status l_s_regected">
             <div>Rechazada</div>
           </div>
+          <button v-if="user.perms > 3 && law.status == 'aproved'">Firmar</button>
         </div>
       </div>
     </div>
@@ -201,7 +208,7 @@ main {
   padding: 1rem;
   font-weight: bold;
   color: var(--white);
-  width: 6rem;
+  width: 4.5rem;
 }
 .l_s_signed {
   background-color: green;
@@ -274,5 +281,11 @@ main {
   font-style: normal;
   font-size: 3rem;
   transform: translateY(2.3rem);
+}
+.law_item_date_c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 </style>
