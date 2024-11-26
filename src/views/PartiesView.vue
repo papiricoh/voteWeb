@@ -13,8 +13,19 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           username: 'johndoe',
           perms: 4
         },
+        own_party: {
+          id: 1,
+          name: 'Vox',
+          label: 'VOX',
+          description: 'Descripcion del partido 1',
+          members: 12,
+          leader: 'Santiago Abascal',
+          foundation: '2021-01-01',
+          color: 'green'
+        },
         parties: [
           {
+            id: 2,
             name: 'Partido socialista obrero español',
             label: 'PSOE',
             description: 'Descripcion del partido 1',
@@ -24,6 +35,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             color: '#FA0109'
           },
           {
+            id: 3,
             name: 'Junta General de los Trabajadores de Jerez',
             label: 'JGTADJ',
             description: 'Descripcion del partido 1',
@@ -33,6 +45,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             color: '#829109'
           },
           {
+            id: 4,
             name: 'Partido Popular',
             label: 'PP',
             description: 'Descripcion del partido 1',
@@ -55,7 +68,14 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
     <h1>Partidos</h1>
     <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
     <div v-else class="parties_list">
-      <div class="new_party">Crear un nuevo partido</div>
+      <div v-if="own_party" class="party_item party_item_own">
+        <div class="party_logo" :style="'background-color: ' + own_party.color + ';'">{{own_party.label}}</div>
+        <div class="party_name">{{own_party.name}}</div>
+        <div>{{own_party.members}} miembros</div>
+        <div>Presidente: {{own_party.leader}}</div>
+        <div class="afiliate_button leave_button">Abandonar</div>
+      </div>
+      <div v-else class="new_party">Crear un nuevo partido</div>
       <div v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
@@ -159,6 +179,24 @@ main {
 .new_party:active {
   background-color: var(--cerulean);
   transform: scale(.98);
+}
+
+.party_item_own {
+  background-color: rgb(80, 80, 80);
+  color: white;
+}
+.party_item_own:hover {
+  background-color: rgb(70, 70, 70);
+}
+.leave_button {
+  background-color: rgb(140, 0, 0);
+}
+.leave_button:hover {
+  background-color: rgb(120, 0, 0);
+}
+.leave_button:active {
+  background-color: rgb(100, 0, 0);
+  transform: scale(1.02);
 }
 
 </style>
