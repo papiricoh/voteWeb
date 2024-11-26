@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import VoteView from '../views/VoteView.vue'
 import LawsView from '../views/LawsView.vue'
 import LogInView from '@/views/LogInView.vue'
+import GovernmentView from '@/views/GovernmentView.vue'
+import NewsView from '@/views/NewsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: '/logIn',
       name: 'logIn',
       component: LogInView,
+    },
+    {
+      path: '/government',
+      name: 'Government',
+      component: GovernmentView,
+    },
+    {
+      path: '/news',
+      name: 'News',
+      component: NewsView,
     },
   ],
 })
