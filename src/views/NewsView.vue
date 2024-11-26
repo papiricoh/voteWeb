@@ -35,15 +35,15 @@
             content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
             date: '2021-10-10',
             author: 'John Doe',
-            alert: null
+            alert: 'session'
           },
           {
-            title: 'Noticia 2',
+            title: 'Noticia 2 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
             content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
             date: '2021-10-10',
             author: 'John Doe',
-            alert: null
+            alert: 'party'
           },
           {
             title: 'Noticia 2',
@@ -64,11 +64,19 @@
 
 <template>
   <main>
+    <div style="align-self: center; font-weight: 1000; font-size: 2.6rem;">THE UAX STREET JOURNAL</div>
+    <div class="news_header">
+      <div>The Street Journal™</div>
+      <div class="news_new_new">Nueva Noticia</div>
+    </div>
+
     <div class="news_list">
       <div v-for="anew in news" class="news_item">
         <div v-if="anew.alert == 'new'" class="news_alert n_alert_new">Nuevo</div>
         <div v-else-if="anew.alert == 'urgent'" class="news_alert n_alert_urgent">Importante</div>
-        <div class="news_header">
+        <div v-else-if="anew.alert == 'session'" class="news_alert n_alert_session">Pleno</div>
+        <div v-else-if="anew.alert == 'party'" class="news_alert n_alert_party">Partido</div>
+        <div class="news_item_header">
           <h2>{{ anew.title }}</h2>
           <p>{{ anew.subtitle }}</p>
         </div>
@@ -88,6 +96,8 @@ main {
   align-items: stretch;
   margin-left: 16vw;
   font-family: Escrow Condensed, Times New Roman, serif;
+  font-stretch: normal;
+  letter-spacing: -.25px;
   color: #333;
 }
 .news_list {
@@ -109,7 +119,6 @@ main {
   justify-content: space-between;
   transition: .4s;
   cursor: pointer;
-  max-width: 26vh;
 }
 
 .news_item:hover {
@@ -135,6 +144,34 @@ main {
 }
 .n_alert_urgent {
   background-color: rgb(198, 171, 0);
+}
+
+.n_alert_session {
+  background-color: rgb(0, 64, 120);
+}
+
+.n_alert_party {
+  background-color: grey;
+}
+
+.news_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.news_new_new {
+  color: #333;
+  cursor: pointer;
+}
+.news_new_new:hover {
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.news_new_new:active {
+  color: #333;
 }
 
 </style>
