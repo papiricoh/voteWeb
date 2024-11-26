@@ -6,6 +6,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
   export default {
     data() {
       return {
+        loading: false,
         user: {
           firstName: 'John',
           lastName: 'Doe',
@@ -42,7 +43,8 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 
 <template>
   <main>
-    <div class="parties_list">
+    <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
+    <div v-else class="parties_list">
       <div v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
@@ -50,7 +52,6 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         <div>{{party.leader}}</div>
       </div>
     </div>
-    <LoadingComponent></LoadingComponent>
   </main>
 </template>
 
@@ -100,6 +101,10 @@ main {
 .party_name {
   font-size: 1.5vw;
   font-weight: bold;
+}
+.loading {
+  align-self: center;
+  
 }
 
 </style>
