@@ -1,0 +1,104 @@
+<script setup>
+
+</script>
+
+<script>
+  export default {
+    data() {
+      return {
+        user: {
+          firstName: 'John',
+          lastName: 'Doe',
+          username: 'johndoe',
+          perms: 4
+        },
+        parties: [
+          {
+            name: 'Partido socialista obrero español',
+            label: 'PSOE',
+            description: 'Descripcion del partido 1',
+            members: 12,
+            leader: 'Pedro Sanchez',
+            foundation: '2021-01-01',
+            color: '#FA0109'
+          },
+          {
+            name: 'Junta General de los Trabajadores de Jerez',
+            label: 'JGTADJ',
+            description: 'Descripcion del partido 1',
+            members: 12,
+            leader: 'Soralla baena',
+            foundation: '2021-01-01',
+            color: '#829109'
+          },
+        ]
+      };
+    },
+    methods: {
+      
+    },
+  };
+</script>
+
+<template>
+  <main>
+    <div class="parties_list">
+      <div v-for="party in parties" class="party_item">
+        <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
+        <div class="party_name">{{party.name}}</div>
+        <div>{{party.members}}</div>
+        <div>{{party.leader}}</div>
+      </div>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+main {
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
+  margin-left: 16vw;
+}
+
+.parties_list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.party_item {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 10vw 2fr 1fr 2fr 1fr;
+  align-items: center;
+  transition: .4s;
+  cursor: pointer;
+  border-radius: .4rem;
+  background-color: #f0f0f0;
+}
+
+.party_item:hover {
+  background-color: #aeaeae;
+}
+.party_logo {
+  background-color: grey;
+  padding: 1rem;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.35vw;
+  font-weight: bold;
+  border-radius: .4rem;
+}
+.party_name {
+  font-size: 1.5vw;
+  font-weight: bold;
+}
+
+</style>
