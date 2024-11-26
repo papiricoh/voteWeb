@@ -1,5 +1,5 @@
 <script setup>
-
+import LoadingComponent from '@/components/LoadingComponent.vue';
 </script>
 
 <script>
@@ -50,6 +50,7 @@
         <div>{{party.leader}}</div>
       </div>
     </div>
+    <LoadingComponent></LoadingComponent>
   </main>
 </template>
 
