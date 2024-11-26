@@ -77,7 +77,7 @@
 
 <template>
   <main>
-    <div>Leyes</div>
+    <h1 style="align-self: flex-start;">Leyes</h1>
     <div class="law_list_c">
       <div v-for="law in laws" class="law_item_c">
         <div class="law_item_title_c">
@@ -141,10 +141,9 @@ main {
 .law_list_c {
   display: grid;
   grid-template-rows: repeat(auto-fill,  1fr);
-  gap: .4rem;
+  gap: .6rem;
   width: 100%;
   align-items: center;
-  padding: 1rem;
   box-sizing: border-box;
 }
 .law_item_c {

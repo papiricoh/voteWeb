@@ -32,6 +32,15 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             foundation: '2021-01-01',
             color: '#829109'
           },
+          {
+            name: 'Partido Popular',
+            label: 'PP',
+            description: 'Descripcion del partido 1',
+            members: 12,
+            leader: 'Nuñez Feijoo',
+            foundation: '2021-01-01',
+            color: 'darkblue'
+          },
         ]
       };
     },
@@ -43,13 +52,15 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 
 <template>
   <main>
+    <h1>Partidos</h1>
     <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
     <div v-else class="parties_list">
       <div v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
-        <div>{{party.members}}</div>
-        <div>{{party.leader}}</div>
+        <div>{{party.members}} miembros</div>
+        <div>Presidente: {{party.leader}}</div>
+        <div class="afiliate_button">Solicitar afiliacion</div>
       </div>
     </div>
   </main>
@@ -84,7 +95,7 @@ main {
 }
 
 .party_item:hover {
-  background-color: #aeaeae;
+  background-color: #cecece;
 }
 .party_logo {
   background-color: grey;
@@ -105,6 +116,25 @@ main {
 .loading {
   align-self: center;
   
+}
+
+.afiliate_button {
+  background-color: var(--prussian-blue);
+  color: white;
+  font-weight: bold;
+  padding: .5rem;
+  border-radius: 0 .4rem .4rem 0; 
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .8rem;
+  transition: .4s;
+}
+
+.afiliate_button:hover {
+  background-color: var(--cerulean);
 }
 
 </style>

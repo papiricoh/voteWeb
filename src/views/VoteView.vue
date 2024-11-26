@@ -19,7 +19,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
 
 <template>
   <main>
-    <div>Parliament</div>
+    <h1 style="align-self: flex-start;">Parlamento</h1>
     <ParliamentChart></ParliamentChart>
     <VoteChart :total="50" :favour="30" :against="10"></VoteChart>
 
