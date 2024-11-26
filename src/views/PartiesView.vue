@@ -68,7 +68,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
     <h1>Partidos</h1>
     <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
     <div v-else class="parties_list">
-      <div v-if="own_party" class="party_item party_item_own">
+      <div v-if="own_party" class="party_item party_item_own" :style="'outline-color:' + own_party.color + ';'">
         <div class="party_logo" :style="'background-color: ' + own_party.color + ';'">{{own_party.label}}</div>
         <div class="party_name">{{own_party.name}}</div>
         <div>{{own_party.members}} miembros</div>
@@ -182,11 +182,7 @@ main {
 }
 
 .party_item_own {
-  background-color: rgb(80, 80, 80);
-  color: white;
-}
-.party_item_own:hover {
-  background-color: rgb(70, 70, 70);
+  outline: 2px solid grey;
 }
 .leave_button {
   background-color: rgb(140, 0, 0);
