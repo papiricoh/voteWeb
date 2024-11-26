@@ -55,6 +55,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
     <h1>Partidos</h1>
     <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
     <div v-else class="parties_list">
+      <div class="new_party">Crear un nuevo partido</div>
       <div v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
@@ -135,6 +136,29 @@ main {
 
 .afiliate_button:hover {
   background-color: var(--cerulean);
+}
+
+.new_party {
+  background-color: var(--prussian-blue);
+  color: white;
+  font-weight: bold;
+  padding: .5rem;
+  border-radius: .4rem; 
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .8rem;
+  transition: .4s;
+  cursor: pointer;
+}
+.new_party:hover {
+  background-color: var(--cerulean);
+}
+.new_party:active {
+  background-color: var(--cerulean);
+  transform: scale(.98);
 }
 
 </style>
