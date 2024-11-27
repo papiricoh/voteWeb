@@ -18,6 +18,7 @@
             description: 'La ley de la gravedad es una ley universal que se aplica a todos los cuerpos que poseen masa.',
             date: '1687',
             status: 'signed',
+            sign: 'Papi Rico',
             articles: [
               {
                 title: 'Articulo 1',
@@ -63,7 +64,8 @@
           }
         ],
         reading: false,
-        readingLaw: {title: '', description: '', date: '', status: '', articles: []}
+        readingLaw: {title: '', description: '', date: '', status: '', articles: []},
+
       };
     },
     methods: {
@@ -78,6 +80,8 @@
 <template>
   <main>
     <h1 style="align-self: flex-start;">Leyes</h1>
+    <div @click="$router.push('/laws/new')" class="new_law">Nueva Ley</div>
+    <div v-if="laws.length == 0">No hay leyes</div>
     <div class="law_list_c">
       <div v-for="law in laws" class="law_item_c">
         <div class="law_item_title_c">
@@ -117,9 +121,9 @@
         </div>
         <div class="lr_footer">
           <div v-if="readingLaw.status == 'signed'">
-            <div class="sign">Pablo Rico</div>
+            <div class="sign">{{readingLaw.sign}}</div>
             <hr>
-            <div>El Excelentisimo Presidente</div>
+            <div>Excelentisimo Presidente</div>
           </div>
         </div>
       </div>
@@ -286,5 +290,23 @@ main {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.new_law {
+  background-color: var(--prussian-blue);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: .4rem;
+  cursor: pointer;
+  transition: .4s;
+  width: 10rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+
+.new_law:hover {
+  background-color: var(--cerulean);
 }
 </style>
