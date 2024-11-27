@@ -20,6 +20,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
 <template>
   <main>
     <h1 style="align-self: flex-start;">Parlamento</h1>
+    <div class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
     <ParliamentChart></ParliamentChart>
     <VoteChart :total="50" :favour="30" :against="10"></VoteChart>
 
@@ -37,4 +38,21 @@ main {
   align-items: center;
   margin-left: 16vw;
 }
+.propose_session {
+  padding: 1rem;
+  background-color: var(--prussian-blue);
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  border-radius: .4rem;
+  transition: .4s;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+
+.propose_session:hover {
+  background-color: var(--cerulean);
+}
+
 </style>

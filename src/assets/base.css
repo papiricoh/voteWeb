@@ -8,6 +8,12 @@
   --prussian-blue: #003459ff;
   --cerulean: #007ea7ff;
   --picton-blue: #00a8e8ff;
+
+
+  --arrow-bg: rgba(255, 255, 255, 0.3);
+  --arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
+  --option-bg: white;
+  --select-bg: rgba(255, 255, 255, 0.2);
 }
 
 body {
