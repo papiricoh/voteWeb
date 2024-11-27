@@ -13,7 +13,7 @@
 
           //Rules
           selectedRule: "select",
-          ruleValue: 0,
+          ruleValue: null,
 
 
 
@@ -25,6 +25,11 @@
           ]
       };
     },
+    methods: {
+      isNumber(value) {
+        return !isNaN(value);
+      }
+    },
     computed: {
       canPropose() {
         if (this.sessionType == "select") return false;
@@ -34,7 +39,7 @@
         }
         if (this.sessionType == "ruleChange") {
           if (this.selectedRule == "select") return false;
-          if (this.ruleValue == null && this.ruleValue == 0) return false;
+          if (this.ruleValue == null || this.ruleValue == 0 || !this.isNumber(this.ruleValue)) return false;
           return true;
         }
         if (this.sessionType == "control") return true;
@@ -55,7 +60,10 @@
         <option value="law">Propuesta de ley</option>
         <option value="ruleChange">Cambio de reglas constitucionales</option>
         <option disabled value="impeachment">Mocion de censura</option>
-        <option disabled value="fire">Cesion de cargo</option>
+        <option disabled value="addMember">Investidura de cargo politico</option>
+        <option disabled value="fireMember">Cesion de cargo politico</option>
+        <option disabled value="addJudge">Nombramiento de juez</option>
+        <option disabled value="fireJudge">Cesion de juez</option>
       </select>
     </div>
     <div v-if="sessionType == 'law'" class="session_section">
