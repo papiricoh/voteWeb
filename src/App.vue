@@ -14,6 +14,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/vote">Votacion</RouterLink>
           <RouterLink to="/laws">Leyes</RouterLink>
           <RouterLink to="/parties">Partidos</RouterLink>
+          <RouterLink to="/courts">Tribunales</RouterLink>
           <RouterLink to="/government">Gobierno</RouterLink>
 
         </div>
