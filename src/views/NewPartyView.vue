@@ -1,6 +1,7 @@
 <script setup>
 import IdeologyMeter from '@/components/IdeologyMeter.vue';
 import LoadingComponent from '@/components/LoadingComponent.vue';
+import { ColorPicker } from "vue3-colorpicker";
 </script>
 
 <script>
@@ -17,11 +18,16 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         
 
         // New Party
+        party_name: '',
+        party_label: '',
         ideology: 0,
+        pureColor: '#000001',
       };
     },
-    methods: {
-      
+    computed: {
+      canCreate() {
+        return this.party_name.length > 0 && this.party_label.length > 0 && this.pureColor != '#000001';
+      }
     },
   };
 </script>
@@ -29,8 +35,24 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 <template>
   <main>
     <h1>Nuevo Partido</h1>
+    <div style="display: flex; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <label for="name">Nombre</label>
+        <input v-model="party_name" type="text" id="name" placeholder="Nombre del partido" maxlength="80"/>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <label for="label">Siglas</label>
+        <input v-model="party_label" type="text" id="label" placeholder="PAR" maxlength="6"/>
+      </div>
+    </div>
+    <label for="ideology">Ideología</label>
     <IdeologyMeter :isDisabled="false" v-model="ideology"/>
-    <div>{{ideology}}</div>
+    <label>Color</label>
+    <div class="color_container">
+      <color-picker isWidget v-model:pureColor="pureColor" v-model:gradientColor="gradientColor"/>
+      <div class="party_logo" :style="'background-color: ' + pureColor + ';'">{{party_label}}</div>
+    </div>
+    <button v-if="canCreate" class="new_party">Crear Partido</button>
   </main>
 </template>
 
@@ -45,29 +67,58 @@ main {
   margin-left: 16vw;
 }
 
-.parties_list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+label {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
-.party_item {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 10vw 2fr 1fr 2fr 1fr;
-  align-items: center;
-  transition: .4s;
+select, input {
+  /* Reset */
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  /* Personalize */
+  width: 20rem;
+  padding: 1rem 4rem 1rem 1rem;
+  background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
+    linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+  background-color: var(--prussian-blue);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  border-radius: .4rem;
-  background-color: #f0f0f0;
+  /* Remove IE arrow */
+  &::-ms-expand {
+    display: none;
+  }
+  /* Remove focus outline */
+  &:focus {
+    outline: none;
+  }
+  /* <option> colors */
+  option {
+    color: inherit;
+    background-color: var(--option-bg);
+  }
 }
 
-.party_item:hover {
-  background-color: #cecece;
+input {
+  background: linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em, 60%);
+  background-color: var(--prussian-blue);
+  cursor: text;
+}
+
+.color_container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
 }
 .party_logo {
   background-color: grey;
   padding: 1rem;
+  width: 20vh;
+  height: 20vh;
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
@@ -76,34 +127,9 @@ main {
   font-size: 2.35vw;
   font-weight: bold;
   border-radius: .4rem;
-}
-.party_name {
-  font-size: 1.5vw;
-  font-weight: bold;
-}
-.loading {
-  align-self: center;
-  
+  transition: 1s;
 }
 
-.afiliate_button {
-  background-color: var(--prussian-blue);
-  color: white;
-  font-weight: bold;
-  padding: .5rem;
-  border-radius: 0 .4rem .4rem 0; 
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: .8rem;
-  transition: .4s;
-}
-
-.afiliate_button:hover {
-  background-color: var(--cerulean);
-}
 
 .new_party {
   background-color: var(--prussian-blue);
@@ -127,19 +153,4 @@ main {
   background-color: var(--cerulean);
   transform: scale(.98);
 }
-
-.party_item_own {
-  outline: 2px solid grey;
-}
-.leave_button {
-  background-color: rgb(140, 0, 0);
-}
-.leave_button:hover {
-  background-color: rgb(120, 0, 0);
-}
-.leave_button:active {
-  background-color: rgb(100, 0, 0);
-  transform: scale(1.02);
-}
-
 </style>

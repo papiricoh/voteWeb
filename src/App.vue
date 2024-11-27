@@ -2,6 +2,30 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
+
+<script>
+  export default {
+    data() {
+      return {
+        loading: false,
+        user: {
+          first_name: 'John',
+          last_name: 'Doe',
+          username: 'johndoe',
+          perms: 4,
+          party: {
+            label: 'VOX',
+          }
+        },
+      };
+    },
+    computed: {
+      
+    },
+  };
+</script>
+
+
 <template>
   <header>
     <div class="wrapper">
@@ -24,6 +48,15 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
   <RouterView />
+  <div class="user_container">
+    <div class="user_name">
+      <div>{{user.first_name}} {{user.last_name}}</div>
+      <div>{{user.username}}</div>
+    </div>
+    <div class="user_details">
+      <div>{{user.party.label}}</div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -57,5 +90,33 @@ nav {
 
 .nav_section > a:hover {
   background-color: var(--cerulean);
+}
+
+.user_container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: var(--prussian-blue);
+  color: white;
+  padding: .5rem;
+  border-radius: .4rem;
+  margin: .4rem;
+  cursor: pointer;
+  transition: .4s;
+  display: flex;
+  gap: .6rem;
+}
+.user_name {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+}
+.user_name > div:last-child {
+  font-size: .8rem;
+  font-weight: 400;
+}
+.user_details {
+  display: flex;
+  flex-direction: column;
 }
 </style>
