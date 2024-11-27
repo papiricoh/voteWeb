@@ -46,6 +46,14 @@
             alert: 'party'
           },
           {
+            title: 'Noticia 2 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
+            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
+            date: '2021-10-10',
+            author: 'John Doe',
+            alert: 'admin'
+          },
+          {
             title: 'Noticia 2',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
             content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
@@ -76,6 +84,7 @@
         <div v-else-if="anew.alert == 'urgent'" class="news_alert n_alert_urgent">Importante</div>
         <div v-else-if="anew.alert == 'session'" class="news_alert n_alert_session">Pleno</div>
         <div v-else-if="anew.alert == 'party'" class="news_alert n_alert_party">Partido</div>
+        <div v-else-if="anew.alert == 'admin'" class="news_alert n_alert_admin">Admin (OOC)</div>
         <div class="news_item_header">
           <h2>{{ anew.title }}</h2>
           <p>{{ anew.subtitle }}</p>
@@ -122,7 +131,6 @@ main {
 }
 
 .news_item:hover {
-  background-color: #c2c2c2;
   transform: scale3d(1.02, 1.02, 1) rotate3d(0, 0, 1, .5deg);
 }
 
@@ -172,6 +180,10 @@ main {
 
 .news_new_new:active {
   color: #333;
+}
+
+.n_alert_admin {
+  background-color: black;
 }
 
 </style>

@@ -37,9 +37,9 @@
   <main>
     <h1>Nueva Noticia</h1>
     <label for="title">Titulo</label>
-    <input type="text" id="title" name="title" placeholder="Titulo de la noticia">
+    <input type="text" id="title" name="title" placeholder="Titulo de la noticia" maxlength="50">
     <label for="subtitle">Subtitulo</label>
-    <input type="text" id="subtitle" name="subtitle" placeholder="Subtitulo de la noticia">
+    <input type="text" id="subtitle" name="subtitle" placeholder="Subtitulo de la noticia" maxlength="120">
     <label for="content">Contenido</label>
     <textarea id="content" name="content" placeholder="Contenido de la noticia"></textarea>
     <div class="nn_author">
