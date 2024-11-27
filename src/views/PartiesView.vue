@@ -13,16 +13,17 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           username: 'johndoe',
           perms: 4
         },
-        own_party: {
-          id: 1,
-          name: 'Vox',
-          label: 'VOX',
-          description: 'Descripcion del partido 1',
-          members: 12,
-          leader: 'Santiago Abascal',
-          foundation: '2021-01-01',
-          color: 'green'
-        },
+        // own_party: {
+        //   id: 1,
+        //   name: 'Vox',
+        //   label: 'VOX',
+        //   description: 'Descripcion del partido 1',
+        //   members: 12,
+        //   leader: 'Santiago Abascal',
+        //   foundation: '2021-01-01',
+        //   color: 'green'
+        // },
+        own_party: null,
         parties: [
           {
             id: 2,
@@ -75,7 +76,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         <div>Presidente: {{own_party.leader}}</div>
         <div class="afiliate_button leave_button">Abandonar</div>
       </div>
-      <div v-else class="new_party">Crear un nuevo partido</div>
+      <div v-else class="new_party" @click="$router.push('/parties/new')">Crear un nuevo partido</div>
       <div v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
