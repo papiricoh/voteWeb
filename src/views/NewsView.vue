@@ -67,7 +67,7 @@
     <div style="align-self: center; font-weight: 1000; font-size: 2.6rem;">THE UAX STREET JOURNAL</div>
     <div class="news_header">
       <div>The Street Journal™</div>
-      <div class="news_new_new">Nueva Noticia</div>
+      <div @click="$router.push('/news/new')" class="news_new_new">Nueva Noticia</div>
     </div>
 
     <div class="news_list">
