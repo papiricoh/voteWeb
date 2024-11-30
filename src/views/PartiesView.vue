@@ -6,7 +6,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
   export default {
     data() {
       return {
-        loading: false,
+        loading: true,
         user: {
           firstName: 'John',
           lastName: 'Doe',
@@ -61,6 +61,9 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
     methods: {
       
     },
+    async onMounted() {
+      this.loading = false;
+    }
   };
 </script>
 

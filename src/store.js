@@ -6,12 +6,7 @@ const store = createStore({
         rootURL: "http://localhost:8080",
         baseURL: "http://localhost:8080/api/v1",
         uploadURL: "http://localhost:8080/upload",
-        user: {
-            id: 0,
-            username: "Username",
-            photo_url: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
-            token: ""
-        }
+        user: null
     },
     mutations: {
         setLogged(state, newValue) {

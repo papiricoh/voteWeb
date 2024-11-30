@@ -22,13 +22,13 @@ import Cookies from 'js-cookie';
       }).then(response => response.json())
         .then(data => {
           console.log(data);
+          if (data.error) {
+            this.$router.push('/login');
+            return;
+          }
           this.$store.dispatch('setUserAction', data);
 
         })
-        .catch((error) => {
-          console.error('Error:', error);
-          this.$router.push('/login');
-        });
 
       
     },
@@ -70,7 +70,7 @@ import Cookies from 'js-cookie';
   </header>
 
   <RouterView />
-  <div class="user_container">
+  <div v-if="this.$store.getters.getUser" class="user_container">
     <div class="user_name">
       <div>{{this.$store.getters.getUser.first_name}} {{this.$store.getters.getUser.last_name}}</div>
       <div>{{this.$store.getters.getUser.username}}</div>
