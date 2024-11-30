@@ -3,6 +3,7 @@ import './assets/base.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store';
 
 import HighchartsVue from 'highcharts-vue'
 
@@ -12,6 +13,6 @@ import "vue3-colorpicker/style.css";
 const app = createApp(App)
 
 app.use(HighchartsVue)
-app.use(router).use(Vue3ColorPicker)
+app.use(router).use(store).use(Vue3ColorPicker)
 
 app.mount('#app')

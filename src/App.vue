@@ -1,13 +1,44 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Cookies from 'js-cookie';
 </script>
 
 
 <script>
   export default {
+    
+    async created() {
+      console.log('App created');
+      const postData = {
+        username: Cookies.get('authUser'),
+        token: Cookies.get('authToken')
+      };
+      await fetch(`${this.$store.getters.getBaseURL}/login/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      }).then(response => response.json())
+        .then(data => {
+          console.log(data);
+          this.$store.dispatch('setUserAction', data);
+          this.user = this.$store.getters.getUser;
+
+          Cookies.set('authUser', data.username, { expires: 100, path: '' });
+          Cookies.set('authToken', data.last_token_key, { expires: 100, path: '' });
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          this.$router.push('/login');
+        });
+
+      
+    },
     data() {
       return {
         loading: false,
+        
         user: {
           first_name: 'John',
           last_name: 'Doe',
@@ -22,6 +53,9 @@ import { RouterLink, RouterView } from 'vue-router'
     computed: {
       
     },
+    
+
+
   };
 </script>
 
