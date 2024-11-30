@@ -1,4 +1,5 @@
 <script setup>
+import Cookies from 'js-cookie';
 
 </script>
 
@@ -7,10 +8,39 @@
     data() {
       return {
         loginMode: true,
+
+        //Login
+        usename: '',
+        password: '',
       };
     },
     methods: {
-      
+      async logIn() {
+        const postData = {
+          username: this.usename,
+          password: this.password
+        };
+        await fetch(`${this.$store.getters.getBaseURL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        }).then(response => response.json())
+          .then(data => {
+            console.log(data);
+            this.$store.dispatch('setUserAction', data);
+            this.user = this.$store.getters.getUser;
+
+            Cookies.set('authUser', data.username, { expires: 100, path: '' });
+            Cookies.set('authToken', data.token, { expires: 100, path: '' });
+            this.$router.push('/');
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            this.$router.push('/login');
+          });
+      }
     },
   };
 </script>
@@ -20,9 +50,9 @@
     <div v-if="loginMode" class="login_c">
       <div class="login_header">
         <div class="login_title">VoteWeb</div>
-        <input type="text" placeholder="Usuario/Email">
-        <input type="password" placeholder="Contraseña">
-        <button>LogIn</button>
+        <input v-model="usename" type="text" placeholder="Usuario/Email">
+        <input v-model="password" type="password" placeholder="Contraseña">
+        <button @click="logIn()">LogIn</button>
       </div>
       <button class="register_button" @click="loginMode = false">Registrarse</button>
 

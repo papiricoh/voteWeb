@@ -23,10 +23,7 @@ import Cookies from 'js-cookie';
         .then(data => {
           console.log(data);
           this.$store.dispatch('setUserAction', data);
-          this.user = this.$store.getters.getUser;
 
-          Cookies.set('authUser', data.username, { expires: 100, path: '' });
-          Cookies.set('authToken', data.last_token_key, { expires: 100, path: '' });
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -39,15 +36,6 @@ import Cookies from 'js-cookie';
       return {
         loading: false,
         
-        user: {
-          first_name: 'John',
-          last_name: 'Doe',
-          username: 'johndoe',
-          perms: 4,
-          party: {
-            label: 'VOX',
-          }
-        },
       };
     },
     computed: {
@@ -84,11 +72,11 @@ import Cookies from 'js-cookie';
   <RouterView />
   <div class="user_container">
     <div class="user_name">
-      <div>{{user.first_name}} {{user.last_name}}</div>
-      <div>{{user.username}}</div>
+      <div>{{this.$store.getters.getUser.first_name}} {{this.$store.getters.getUser.last_name}}</div>
+      <div>{{this.$store.getters.getUser.username}}</div>
     </div>
     <div class="user_details">
-      <div>{{user.party.label}}</div>
+      <div>{{this.$store.getters.getUser.party.label}}</div>
     </div>
   </div>
 </template>
