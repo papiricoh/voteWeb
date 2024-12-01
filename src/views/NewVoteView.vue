@@ -17,7 +17,8 @@
 
 
 
-          exampleLaws: []
+          exampleLaws: [],
+          rules: []
       };
     },
     async mounted() {
@@ -25,6 +26,7 @@
         if (this.$store.getters.getUser) {
           clearInterval(this.intervalId);
           await this.fetchLaws();
+          await this.fetchRules();
         }
       }, 40);
     },
@@ -47,6 +49,24 @@
               return;
             }
             this.exampleLaws = data;
+
+          })
+      },
+      async fetchRules() {
+        await fetch(`${this.$store.getters.getBaseURL}/rules`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              
+              return;
+            }
+            this.rules = data;
 
           })
       }
@@ -98,7 +118,7 @@
       <label>Regla a cambiar:</label>
       <select v-model="selectedRule">
         <option disabled value="select">Selecciona la regla</option>
-        <option value="points">Puntos ganados a la semana</option>
+        <option v-for="rule in rules" :value="rule.id">{{rule.name}}</option>
       </select>
       <input v-model="ruleValue" type="text" placeholder="Valor numerico (10?)">
     </div>
