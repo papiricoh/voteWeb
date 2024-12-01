@@ -1,4 +1,5 @@
 <script setup>
+import IdeologyMeter from '@/components/IdeologyMeter.vue';
 import LoadingComponent from '@/components/LoadingComponent.vue';
 </script>
 
@@ -81,18 +82,15 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
               
               return;
             }
+            var newParties = [];
             for (let party of data) {
-              if (party.id === this.$store.getters.getUser.party.id) {
+              if (party.id === this.$store.getters.getUser.party.id && party.label !== 'IND') {
                 this.own_party = party;
-                if (data.lenght == 1) {
-                  data = [];
-                }
-                delete data[data.indexOf(party)];
-                
-                break;
+              }else {
+                newParties.push(party);
               }
             }
-            this.parties = data;
+            this.parties = newParties;
             this.loading = false;
 
           })
@@ -109,19 +107,25 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
     <div v-else class="parties_list">
       <div v-if="own_party" class="party_item party_item_own" :style="'outline-color:' + own_party.color + ';'">
         <div class="party_logo" :style="'background-color: ' + own_party.color + ';'">{{own_party.label}}</div>
-        <div class="party_name">{{own_party.name}}</div>
+        <div class="party_name">
+          <div>{{own_party.name}}</div>
+          <IdeologyMeter v-model="own_party.ideology"></IdeologyMeter>
+        </div>
         <div>{{own_party.members}} miembros</div>
         <div>Presidente: {{own_party.leader}}</div>
         <div class="afiliate_button leave_button">Abandonar</div>
       </div>
       <div v-else class="new_party" @click="$router.push('/parties/new')">Crear un nuevo partido</div>
-      <div v-if="true">No hay mas partidos</div>
+      <div v-if="!parties">No hay mas partidos</div>
       <div v-else v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
-        <div class="party_name">{{party.name}}</div>
+        <div class="party_name">
+          <div>{{party.name}}</div>
+          <IdeologyMeter v-model="party.ideology"></IdeologyMeter>
+        </div>
         <div>{{party.members}} miembros</div>
         <div>Presidente: {{party.leader}}</div>
-        <div class="afiliate_button">Solicitar afiliacion</div>
+        <div v-if="party.label !== 'IND'" class="afiliate_button">Solicitar afiliacion</div>
       </div>
     </div>
   </main>
