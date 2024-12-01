@@ -20,6 +20,9 @@
                 required: true,
             },
         },
+        watch: {
+            
+        },
         computed: {
             favourPercentage() {
                 return (this.favour / this.total) * 100;
