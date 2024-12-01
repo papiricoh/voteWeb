@@ -20,7 +20,7 @@
           clearInterval(this.intervalId);
           await this.fetchLaw();
         }
-      }, 400);
+      }, 50);
     },
     methods: {
       async fetchLaw() {

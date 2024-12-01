@@ -25,6 +25,35 @@
       };
     },
     methods: {
+      async proposeLaw() {
+        let articles = [];
+        this.newLawArticles.forEach(article => {
+          articles.push({
+            title: article.title,
+            content: article.content
+          });
+        });
+        await fetch(`${this.$store.getters.getBaseURL}/laws/new`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(this.$store.getters.getUser.id + ':' + this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify({
+            name: this.newLawtitle,
+            description: this.newLawDesc,
+            articles: articles,
+            user_id: this.$store.getters.getUser.id
+          })
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              
+              return;
+            }
+            this.$router.push('/laws');
+          })
+      }
     },
   };
 </script>
@@ -51,7 +80,7 @@
       </div>
       <div class="nl_footer_buttons">
         <button @click="newLawArticles.push({ id: newLawArticles.length + 1, title: '', content: '' })">Nuevo articulo</button>
-        <button>Proponer ley</button>
+        <button @click="proposeLaw()">Proponer ley</button>
       </div>
     </div>
   </main>
