@@ -13,6 +13,14 @@
 
   export default {
     name: 'ParliamentChart',
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          await this.fetchParties();
+        }
+      }, 40);
+    },
     data() {
       return {
         chartOptions: {
@@ -22,19 +30,11 @@
           title: {
             text: 'Distribución Parlamentaria',
           },
-          subtitle: {
-            text: 'Gráfico de distribución de escaños en un parlamento',
-          },
           series: [
             {
               name: 'Escaños',
               keys: ['name', 'y', 'color', 'label'],
               data: [
-                ['Partido A', 100, '#FF0000', 'A'],
-                ['Partido B', 80, '#0000FF', 'B'],
-                ['Partido C', 60, '#00AA00', 'C'],
-                ['Partido D', 40, '#FFFF00', 'D'],
-                ['Partido E', 20, '#FF00FF', 'E'],
               ],
               dataLabels: {
                 enabled: true,
@@ -43,15 +43,41 @@
 
               center: ['50%', '88%'],
               size: '170%',
-              startAngle: -100,
-              endAngle: 100,
+              startAngle: -90,
+              endAngle: 90,
             },
           ],
           tooltip: {
-            pointFormat: '<b>{point.name}:</b> {point.y} escaños',
+            pointFormat: '<b>{point.label}:</b> {point.y} escaños',
           },
         },
       };
+    },
+    methods: {
+      async fetchParties() {
+        await fetch(`${this.$store.getters.getBaseURL}/parties`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+          var newParties = [];
+          for (let party of data) {
+            if(party.members > 0) {
+              newParties.push([party.name, party.members, party.color, party.label]);
+            }
+          }
+          this.chartOptions.series[0].data = newParties;
+          //this.loading = false;
+
+        })
+      }
     },
   };
 </script>

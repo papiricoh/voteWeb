@@ -76,24 +76,23 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
           },
           body: null
-        }).then(response => response.json())
-          .then(data => {
-            if (data.error) {
-              
-              return;
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+          var newParties = [];
+          for (let party of data) {
+            if (party.id === this.$store.getters.getUser.party.id && party.label !== 'IND') {
+              this.own_party = party;
+            }else {
+              newParties.push(party);
             }
-            var newParties = [];
-            for (let party of data) {
-              if (party.id === this.$store.getters.getUser.party.id && party.label !== 'IND') {
-                this.own_party = party;
-              }else {
-                newParties.push(party);
-              }
-            }
-            this.parties = newParties;
-            this.loading = false;
+          }
+          this.parties = newParties;
+          this.loading = false;
 
-          })
+        })
       }
     },
     
