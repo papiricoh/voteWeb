@@ -17,17 +17,38 @@
 
 
 
-          exampleLaws: [
-            {
-              id: 1,
-              name: "Ley de la gravedad",
-            }
-          ]
+          exampleLaws: []
       };
+    },
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          await this.fetchLaws();
+        }
+      }, 40);
     },
     methods: {
       isNumber(value) {
         return !isNaN(value);
+      },
+      async fetchLaws() {
+        await fetch(`${this.$store.getters.getBaseURL}/laws/pending`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              
+              return;
+            }
+            this.exampleLaws = data;
+
+          })
       }
     },
     computed: {
@@ -70,7 +91,7 @@
       <label>Ley a votar:</label>
       <select v-model="selectedLaw">
         <option disabled value="select">Selecciona la ley</option>
-        <option v-for="law in exampleLaws" :value="law.id">{{law.name}}</option>
+        <option v-for="law in exampleLaws" :value="law.id">{{law.title}}</option>
       </select>
     </div>
     <div v-if="sessionType == 'ruleChange'" class="session_section">

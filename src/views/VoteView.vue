@@ -8,7 +8,8 @@ import VoteButtons from '@/components/VoteButtons.vue';
   export default {
     data() {
       return {
-          
+          inSession: false,
+
       };
     },
     computed: {
@@ -20,9 +21,9 @@ import VoteButtons from '@/components/VoteButtons.vue';
 <template>
   <main>
     <h1 style="align-self: flex-start;">Parlamento</h1>
-    <div class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
+    <div v-if="!inSession" class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
+    <VoteChart v-if="inSession" :total="50" :favour="30" :against="10"></VoteChart>
     <ParliamentChart></ParliamentChart>
-    <VoteChart :total="50" :favour="30" :against="10"></VoteChart>
 
     <VoteButtons></VoteButtons>
   </main>
