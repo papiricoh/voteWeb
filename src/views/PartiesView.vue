@@ -59,11 +59,11 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         ]
       };
     },
-    mounted() {
-      this.intervalId = setInterval(() => {
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
         if (this.$store.getters.getUser) {
           clearInterval(this.intervalId);
-          this.fetchParties();
+          await this.fetchParties();
         }
       }, 400);
     },

@@ -21,7 +21,6 @@ import Cookies from 'js-cookie';
         body: JSON.stringify(postData)
       }).then(response => response.json())
         .then(data => {
-          console.log(data);
           if (data.error) {
             this.$router.push('/login');
             return;

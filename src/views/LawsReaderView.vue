@@ -1,6 +1,4 @@
 <script setup>
-import LoadingComponent from '@/components/LoadingComponent.vue';
-
 
 </script>
 
@@ -8,23 +6,26 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
   export default {
     data() {
       return {
-        loading: true,
-        laws: [],
+        
+        readingLaw: {title: '', description: '', date: '', status: '', articles: []},
 
       };
+    },
+    props: {
+      id: String
     },
     async mounted() {
       this.intervalId = await setInterval(async () => {
         if (this.$store.getters.getUser) {
           clearInterval(this.intervalId);
-          await this.fetchLaws();
+          await this.fetchLaw();
         }
       }, 400);
     },
     methods: {
-      async fetchLaws() {
-        await fetch(`${this.$store.getters.getBaseURL}/laws`, {
-          method: 'POST',
+      async fetchLaw() {
+        await fetch(`${this.$store.getters.getBaseURL}/laws/${this.id}`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
@@ -36,7 +37,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
               
               return;
             }
-            this.laws = data;
+            this.readingLaw = data;
             this.loading = false;
 
           })
@@ -47,32 +48,24 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 
 <template>
   <main>
-    <h1 style="align-self: flex-start;">Leyes</h1>
-    <div @click="$router.push('/laws/new')" class="new_law">Nueva Ley</div>
-    <div v-if="laws.length == 0">No hay leyes</div>
-    <LoadingComponent v-if="loading" />
-    <div v-else class="law_list_c">
-      <div v-for="law in laws" class="law_item_c">
-        <div class="law_item_title_c">
-          <div class="law_item_t">{{law.title}}</div>
-          <div class="law_item_d">{{law.description}}</div>
+    <div class="law_reader_b">
+      <div class="law_reader">
+        <div class="law_r_header">
+          <div class="lr_title">{{readingLaw.title}}</div>
+          <div @click="$router.push('/laws')" class="exit_button">Volver</div>
         </div>
-        <div class="law_item_date_c">{{law.date}}</div>
-        <div class="law_item_button_c">
-          <button @click="$router.push(`/laws/${law.id}`)">Leer</button>
-          <div v-if="law.status == 'signed'" class="law_status l_s_signed">
-            <div>Firmada</div>
+        <hr>
+        <div>{{readingLaw.description}}</div>
+        <div v-for="article in readingLaw.articles">
+          <div class="lr_article_title">{{article.title}}</div>
+          <div>{{article.content}}</div>
+        </div>
+        <div class="lr_footer">
+          <div v-if="readingLaw.status == 'signed'">
+            <div class="sign">{{readingLaw.sign}}</div>
+            <hr>
+            <div>Excelentisimo Presidente</div>
           </div>
-          <div v-else-if="law.status == 'pending'" class="law_status l_s_pending">
-            <div>Pendiente</div>
-          </div>
-          <div v-else-if="law.status == 'aproved'" class="law_status l_s_aproved">
-            <div>Aprovada</div>
-          </div>
-          <div v-else class="law_status l_s_regected">
-            <div>Rechazada</div>
-          </div>
-          <button v-if="$store.getters.getUser.perms > 3 && law.status == 'aproved'">Firmar</button>
         </div>
       </div>
     </div>
@@ -174,16 +167,11 @@ main {
   background-color: rgb(0, 91, 130);
 }
 .law_reader_b {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
-  height: 100vh;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 3rem;
 }
 .law_reader {
   background-color: white;
@@ -198,17 +186,16 @@ main {
   align-items: center;
 }
 .exit_button {
-  width: 2rem;
-  height: 2rem;
   background-color: var(--cerulean);
   border-radius: .4rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  padding: .2rem;
+  padding: .6rem 1.4rem;
   font-weight: bold;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
+  color: var(--white);
 }
 .lr_title {
   font-size: 1.5rem;

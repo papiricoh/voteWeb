@@ -10,6 +10,7 @@ import NewLawView from '@/views/NewLawView.vue'
 import NewVoteView from '@/views/NewVoteView.vue'
 import NewNewsView from '@/views/NewNewsView.vue'
 import NewPartyView from '@/views/NewPartyView.vue'
+import LawsReaderView from '@/views/LawsReaderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,12 @@ const router = createRouter({
       path: '/laws',
       name: 'laws',
       component: LawsView,
+    },
+    {
+      path: '/laws/:id',
+      name: 'lawsReader',
+      component: LawsReaderView,
+      props: true
     },
     {
       path: '/laws/new',
