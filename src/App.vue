@@ -70,13 +70,13 @@ import Cookies from 'js-cookie';
   </header>
 
   <RouterView />
-  <div v-if="this.$store.getters.getUser" class="user_container">
+  <div v-if="$store.getters.getUser" class="user_container">
     <div class="user_name">
-      <div>{{this.$store.getters.getUser.first_name}} {{this.$store.getters.getUser.last_name}}</div>
-      <div>{{this.$store.getters.getUser.username}}</div>
+      <div>{{$store.getters.getUser.first_name}} {{$store.getters.getUser.last_name}}</div>
+      <div>{{$store.getters.getUser.username}}</div>
     </div>
     <div class="user_details">
-      <div>{{this.$store.getters.getUser.party.label}}</div>
+      <div>{{$store.getters.getUser.party.label}}</div>
     </div>
   </div>
 </template>

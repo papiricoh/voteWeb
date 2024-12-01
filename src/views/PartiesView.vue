@@ -58,12 +58,47 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         ]
       };
     },
-    methods: {
-      
+    mounted() {
+      this.intervalId = setInterval(() => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          this.fetchParties();
+        }
+      }, 400);
     },
-    async onMounted() {
-      this.loading = false;
-    }
+    methods: {
+      async fetchParties() {
+        await fetch(`${this.$store.getters.getBaseURL}/parties`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              
+              return;
+            }
+            for (let party of data) {
+              if (party.id === this.$store.getters.getUser.party.id) {
+                this.own_party = party;
+                if (data.lenght == 1) {
+                  data = [];
+                }
+                delete data[data.indexOf(party)];
+                
+                break;
+              }
+            }
+            this.parties = data;
+            this.loading = false;
+
+          })
+      }
+    },
+    
   };
 </script>
 
@@ -80,7 +115,8 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         <div class="afiliate_button leave_button">Abandonar</div>
       </div>
       <div v-else class="new_party" @click="$router.push('/parties/new')">Crear un nuevo partido</div>
-      <div v-for="party in parties" class="party_item">
+      <div v-if="true">No hay mas partidos</div>
+      <div v-else v-for="party in parties" class="party_item">
         <div class="party_logo" :style="'background-color: ' + party.color + ';'">{{party.label}}</div>
         <div class="party_name">{{party.name}}</div>
         <div>{{party.members}} miembros</div>
