@@ -54,7 +54,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <LoadingComponent v-if="loading" />
     <div v-else-if="!inSession" class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
     <div v-if="inSession" class="session_cont">
-      <div class="loader"></div>
+      <div class="tloader"></div>
       <div>Votando: </div>
       <div>Detalles: </div>
     </div>
@@ -109,7 +109,7 @@ main {
 }
 
 /* HTML: <div class="loader"></div> */
-.loader {
+.tloader {
   width: fit-content;
   font-size: 40px;
   font-family: monospace;
@@ -123,7 +123,7 @@ main {
     l17-0 2s linear infinite alternate,
     l17-1 4s linear infinite;
 }
-.loader:before {
+.tloader:before {
   content: "Sesion En Curso";
 }
 @keyframes l17-0 {
