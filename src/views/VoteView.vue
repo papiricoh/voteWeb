@@ -131,7 +131,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <div v-if="inSession" class="session_cont">
       <div class="tloader"></div>
       <div style="font-weight: 400; font-size: larger;"><b>Votando:</b> {{session.title}}</div>
-      <div>Tiempo restante: {{remainingTime}}</div>
+      <div>Tiempo restante: {{remainingTime ?? '...'}}</div>
     </div>
     <div v-if="!inSession && $store.getters.getUser && $store.getters.getUser.perms >= sessionMinPerm" class="session_cont session_perms">
       <div>Iniciar sesion parlamentaria: </div>
