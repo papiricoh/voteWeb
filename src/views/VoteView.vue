@@ -12,6 +12,12 @@ import VoteButtons from '@/components/VoteButtons.vue';
         loading: true,
         inSession: false,
         session: null,
+
+
+        //Admin / government member
+        sessionsList: [],
+        newSession: "select",
+        sessionMinPerm: 3,
       };
     },
     computed: {
@@ -35,13 +41,33 @@ import VoteButtons from '@/components/VoteButtons.vue';
           },
           body: null
         }).then(response => response.json())
-          .then(data => {
+          .then(async data => {
             if (data.error) {
               return;
             }
             this.inSession = data.inSession;
             this.session = data;
+            if(this.$store.getters.getUser.perms >= this.sessionMinPerm) {
+              await this.fetchSessionList();
+            }
             this.loading = false;
+          })
+      },
+      async fetchSessionList() {
+        await fetch(`${this.$store.getters.getBaseURL}/session/pending`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json())
+          .then(async data => {
+            if (data.error) {
+              return;
+            }
+
+            this.sessionList = data;
           })
       }
     },
@@ -57,6 +83,14 @@ import VoteButtons from '@/components/VoteButtons.vue';
       <div class="tloader"></div>
       <div>Votando: </div>
       <div>Detalles: </div>
+    </div>
+    <div v-if="!inSession && $store.getters.getUser && $store.getters.getUser.perms >= sessionMinPerm" class="session_cont session_perms">
+      <div>Iniciar sesion parlamentaria: </div>
+      <select v-model="newSession">
+        <option disabled value="select">Selecciona la sesion</option>
+        <option v-for="session in sessionList" :value="session.id">{{session.title}}</option>
+      </select>
+      <button>Iniciar sesion</button>
     </div>
     <VoteChart v-if="inSession" :total="50" :favour="30" :against="10"></VoteChart>
     <ParliamentChart></ParliamentChart>
@@ -134,5 +168,59 @@ main {
   0%,50%    {background-position-y: 100%, 0}
   50.01%,to {background-position-y: 0, 100%}
 }
+
+.session_perms {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+select, input {
+  /* Reset */
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  /* Personalize */
+  width: 20rem;
+  padding: 1rem 4rem 1rem 1rem;
+  background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
+    linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+  background-color: var(--prussian-blue);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  /* Remove IE arrow */
+  &::-ms-expand {
+    display: none;
+  }
+  /* Remove focus outline */
+  &:focus {
+    outline: none;
+  }
+  /* <option> colors */
+  option {
+    color: inherit;
+    background-color: var(--option-bg);
+  }
+}
+
+button {
+  padding: 1rem;
+  background-color: var(--cerulean);
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  border-radius: .4rem;
+  transition: .4s;
+  box-sizing: border-box;
+  font-weight: bold;
+  border: 0;
+  outline: 0;
+}
+
 
 </style>
