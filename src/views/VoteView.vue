@@ -55,7 +55,6 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <div v-else-if="!inSession" class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
     <div v-if="inSession" class="session_cont">
       <div class="loader"></div>
-      <div style="font-size: x-large;">Sesion en curso</div>
       <div>Votando: </div>
       <div>Detalles: </div>
     </div>
@@ -109,25 +108,31 @@ main {
   margin-bottom: 2rem;
 }
 
+/* HTML: <div class="loader"></div> */
 .loader {
-  position: absolute;
-  right: 3%;
-  width: 45px;
-  aspect-ratio: 1;
-  --c:no-repeat linear-gradient(#ffffff 0 0);
-  background: 
-    var(--c) 0    0,
-    var(--c) 0    100%, 
-    var(--c) 50%  50%,   
-    var(--c) 100% 0, 
-    var(--c) 100% 100%;
-  animation: l13 1s infinite alternate;
+  width: fit-content;
+  font-size: 40px;
+  font-family: monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff00;
+  -webkit-text-stroke: 1px #ffffff;
+  --g:conic-gradient(#ffffff 0 0) no-repeat text;
+  background:var(--g) 0,var(--g) 1ch,var(--g) 2ch,var(--g) 3ch,var(--g) 4ch,var(--g) 5ch,var(--g) 6ch,var(--g) 7ch,var(--g) 8ch,var(--g) 9ch,var(--g) 10ch,var(--g) 11ch,var(--g) 12ch,var(--g) 13ch,var(--g) 14ch;
+  animation: 
+    l17-0 2s linear infinite alternate,
+    l17-1 4s linear infinite;
 }
-
-@keyframes l13 {
- 0%,10%   {background-size:20% 100%}
- 50%      {background-size:20%  20%}
- 90%,100% {background-size:100% 20%}
+.loader:before {
+  content: "Sesion En Curso";
+}
+@keyframes l17-0 {
+  0%   {background-size: 1ch 0   }
+  100% {background-size: 1ch 100%}
+}
+@keyframes l17-1 {
+  0%,50%    {background-position-y: 100%, 0}
+  50.01%,to {background-position-y: 0, 100%}
 }
 
 </style>

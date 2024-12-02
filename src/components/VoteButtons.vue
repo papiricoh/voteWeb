@@ -38,7 +38,7 @@
     border-radius: .8rem .8rem 0 0;
     border-bottom: 0;
     bottom: 0;
-    left: 50vh;
+    left:  40vw;
     padding: 1.2rem;
     display: flex;
     flex-direction: column;
