@@ -69,6 +69,42 @@
             this.rules = data;
 
           })
+      },
+      formatData() {
+        let data = {
+          type: this.sessionType
+        }
+        if (this.sessionType == "law") {
+          data.target_id = this.selectedLaw;
+        }
+        if (this.sessionType == "ruleChange") {
+          data.target_id = this.selectedRule;
+          data.value = this.ruleValue;
+        }
+        data.user_id = this.$store.getters.getUser.id;
+        
+        return JSON.stringify(data);
+      },
+      async submitSession() {
+        let post_data = this.formatData();
+        await fetch(`${this.$store.getters.getBaseURL}/session/new`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: post_data
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              
+              return;
+            }
+            console.log(data);
+            
+            this.$router.push('/vote');
+
+          })
       }
     },
     computed: {
@@ -124,7 +160,7 @@
     </div>
     
     
-    <div v-if="canPropose" class="propose_session" @click="$router.push('/vote')">Proponer Sesion</div>
+    <div v-if="canPropose" class="propose_session" @click="submitSession()">Proponer Sesion</div>
   </main>
 </template>
 
