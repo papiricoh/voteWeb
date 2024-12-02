@@ -105,6 +105,14 @@
             this.$router.push('/vote');
 
           })
+      },
+      findRule(id) {
+        for (let i = 0; i < this.rules.length; i++) {
+          if (this.rules[i].id == id) {
+            return this.rules[i];
+          }
+        }
+        return null;
       }
     },
     computed: {
@@ -123,6 +131,14 @@
         return false;
       }
     },
+    watch: {
+      selectedRule(newValue, oldValue) {
+        let rule = this.findRule(newValue);
+        this.ruleValue = rule.value;
+        
+        this.selectedRule = newValue;
+      },
+    }
   };
 </script>
 
