@@ -3,36 +3,64 @@
     export default {
         data() {
             return {
-                
+                vote: "abstention",
             };
         },
         computed: {
-
+            getFormattedVote() {
+                if (this.vote == "abstention") {
+                    return "Abstencion";
+                } else if (this.vote == "for") {
+                    return "A Favor";
+                } else if (this.vote == "against") {
+                    return "En Contra";
+                }
+            },
         },
     };
 </script>
 
 <template>
-    <div class="vote_container">
-        <div class="vote_button vote_for">A Favor</div>
-        <div class="vote_button vote_none">Abstencion</div>
-        <div class="vote_button vote_against">En Contra</div>
+    <div class="vote_container_c">
+        <div class="your_vote">Tu voto: {{getFormattedVote}}</div>
+        <div class="vote_container">
+            <div class="vote_button vote_for" @click="vote = 'for'">A Favor</div>
+            <div class="vote_button vote_none" @click="vote = 'abstention'">Abstencion</div>
+            <div class="vote_button vote_against" @click="vote = 'against'">En Contra</div>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.vote_container_c {
+    position: fixed;
+    border: 1px solid black;
+    border-radius: .8rem .8rem 0 0;
+    border-bottom: 0;
+    bottom: 0;
+    left: 50vh;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
 .vote_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     align-items: center;
     gap: .6rem;
-    border: 1px solid black;
-    border-radius: .8rem .8rem 0 0;
-    padding: 1.2rem;
-    border-bottom: 0;
-    position: fixed;
-    bottom: 0;
+}
+
+.your_vote {
+    padding: 1rem;
+    width: 100%;
+    background-color: var(--prussian-blue);
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+    border-radius: .6rem;
 }
 
 .vote_button {

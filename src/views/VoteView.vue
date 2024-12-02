@@ -11,7 +11,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
       return {
         loading: true,
         inSession: false,
-
+        session: null,
       };
     },
     computed: {
@@ -40,6 +40,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
               return;
             }
             this.inSession = data.inSession;
+            this.session = data;
             this.loading = false;
           })
       }
@@ -53,7 +54,10 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <LoadingComponent v-if="loading" />
     <div v-else-if="!inSession" class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
     <div v-if="inSession" class="session_cont">
-      <div>Sesion en curso</div>
+      <div class="loader"></div>
+      <div style="font-size: x-large;">Sesion en curso</div>
+      <div>Votando: </div>
+      <div>Detalles: </div>
     </div>
     <VoteChart v-if="inSession" :total="50" :favour="30" :against="10"></VoteChart>
     <ParliamentChart></ParliamentChart>
@@ -103,6 +107,27 @@ main {
   align-items: stretch;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   margin-bottom: 2rem;
+}
+
+.loader {
+  position: absolute;
+  right: 3%;
+  width: 45px;
+  aspect-ratio: 1;
+  --c:no-repeat linear-gradient(#ffffff 0 0);
+  background: 
+    var(--c) 0    0,
+    var(--c) 0    100%, 
+    var(--c) 50%  50%,   
+    var(--c) 100% 0, 
+    var(--c) 100% 100%;
+  animation: l13 1s infinite alternate;
+}
+
+@keyframes l13 {
+ 0%,10%   {background-size:20% 100%}
+ 50%      {background-size:20%  20%}
+ 90%,100% {background-size:100% 20%}
 }
 
 </style>
