@@ -14,6 +14,8 @@ import VoteButtons from '@/components/VoteButtons.vue';
         session: null,
 
 
+
+        remainingTime: '',
         //Admin / government member
         sessionsList: [],
         newSession: "select",
@@ -31,7 +33,25 @@ import VoteButtons from '@/components/VoteButtons.vue';
         }
       }, 400);
     },
+    beforeDestroy() {
+      clearInterval(this.countIntervalId);
+    },
     methods: {
+      getRemainingTime() {
+        if (!this.session) {
+          return '';
+        }
+        const now = new Date();
+        const end = new Date(this.session.endDate);
+        const diff = end - now;
+        const seconds = Math.floor((diff / 1000) % 60);
+        const minutes = Math.floor((diff / 1000 / 60) % 60);
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        return `${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+      },
+      updateRemainingTime() {
+        this.remainingTime = this.getRemainingTime();
+      },
       async fetchSession() {
         await fetch(`${this.$store.getters.getBaseURL}/session`, {
           method: 'POST',
@@ -46,7 +66,12 @@ import VoteButtons from '@/components/VoteButtons.vue';
               return;
             }
             this.inSession = data.inSession;
+            if(this.inSession) {
+              this.countIntervalId = setInterval(this.updateRemainingTime, 1000);
+            }
             this.session = data;
+            console.log(this.session);
+            
             if(this.$store.getters.getUser.perms >= this.sessionMinPerm) {
               await this.fetchSessionList();
             }
@@ -69,6 +94,30 @@ import VoteButtons from '@/components/VoteButtons.vue';
 
             this.sessionList = data;
           })
+      },
+      async startSession() {
+        await fetch(`${this.$store.getters.getBaseURL}/session/start`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify({
+            user_id: this.$store.getters.getUser.id,
+            session_id: this.newSession
+          })
+        }).then(response => response.json())
+          .then(async data => {
+            if (data.error) {
+              return;
+            }
+
+            this.inSession = data.inSession;
+            if(this.inSession) {
+              this.countIntervalId = setInterval(this.updateRemainingTime, 1000);
+            }
+            this.session = data;
+          })
       }
     },
   };
@@ -81,8 +130,8 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <div v-else-if="!inSession" class="propose_session" @click="$router.push('/vote/new')">Proponer Sesion</div>
     <div v-if="inSession" class="session_cont">
       <div class="tloader"></div>
-      <div>Votando: </div>
-      <div>Detalles: </div>
+      <div style="font-weight: 400; font-size: larger;"><b>Votando:</b> {{session.title}}</div>
+      <div>Tiempo restante: {{remainingTime}}</div>
     </div>
     <div v-if="!inSession && $store.getters.getUser && $store.getters.getUser.perms >= sessionMinPerm" class="session_cont session_perms">
       <div>Iniciar sesion parlamentaria: </div>
@@ -90,9 +139,9 @@ import VoteButtons from '@/components/VoteButtons.vue';
         <option disabled value="select">Selecciona la sesion</option>
         <option v-for="session in sessionList" :value="session.id">{{session.title}}</option>
       </select>
-      <button>Iniciar sesion</button>
+      <button @click="startSession()">Iniciar sesion</button>
     </div>
-    <VoteChart v-if="inSession" :total="50" :favour="30" :against="10"></VoteChart>
+    <VoteChart v-if="inSession" :total="session.seats" :favour="session.forVotes" :against="session.againstVotes"></VoteChart>
     <ParliamentChart></ParliamentChart>
 
     <VoteButtons v-if="inSession"></VoteButtons>
