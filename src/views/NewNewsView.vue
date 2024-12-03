@@ -7,11 +7,11 @@
   export default {
     data() {
       return {
-        isJournalist: true,
+        isJournalist: false,
         nameJournalist: 'Periodista Anonimo',
         isPartyLeader: false,
         nameParty: 'Partido Independiente',
-        isGovernmentMenber: false,
+        isgovernmentMember: false,
         nameGovernment: 'Gobierno de la Nacion',
 
         newTitle: '',
@@ -23,13 +23,24 @@
       };
     },
     async mounted() {
-      
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          this.isJournalist = this.$store.getters.getUser.journalist == 1;
+          this.isPartyLeader = this.$store.getters.getUser.isPartyLeader;
+          this.isgovernmentMember = this.$store.getters.getUser.government;
+        }
+      }, 40);
     },
     methods: {
       async getSelectedAuthor() {
+        this.nameJournalist = this.$store.getters.getUser.first_name + ' ' + this.$store.getters.getUser.last_name;
+        this.nameParty = this.$store.getters.getUser.party.label;
+        this.nameGovernment = this.$store.getters.getUser.government ? this.$store.getters.getUser.government.role : "";
+
         if (this.selectedAuthor == 'me') return this.nameJournalist;
         if (this.selectedAuthor == 'partyLeader') return this.nameParty;
-        if (this.selectedAuthor == 'governmentMenber') return this.nameGovernment;
+        if (this.selectedAuthor == 'governmentMember') return this.nameGovernment;
         if (this.selectedAuthor == 'admin') return 'Admin';
       },
       async fetchParties() {
@@ -38,7 +49,7 @@
           subtitle: this.newSubtitle,
           content: this.newContent,
           author: await this.getSelectedAuthor(),
-          type: 'normal'
+          type: this.selectedAuthor == 'governmentMember' ? 'urgent' : 'normal'
         }
         await fetch(`${this.$store.getters.getBaseURL}/news/create`, {
           method: 'POST',
@@ -81,7 +92,7 @@
         <option disabled value="selected">Seleciona autor</option>
         <option :disabled="!isJournalist" value="me">Yo (Como Periodista)</option>
         <option :disabled="!isPartyLeader" value="partyLeader">Lider de partido (Comunicado de partido)</option>
-        <option :disabled="!isGovernmentMenber" value="governmentMenber">Miembro de Gobierno (Nota de prensa)</option>
+        <option :disabled="!isgovernmentMember" value="governmentMember">Miembro de Gobierno (Nota de prensa)</option>
         <option v-if="$store.getters.getUser && $store.getters.getUser.perms >= 10" value="admin">Comunicado de Administrador (OOC)</option>
       </select>
     </div>

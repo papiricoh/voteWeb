@@ -25,6 +25,9 @@ import Cookies from 'js-cookie';
             this.$router.push('/login');
             return;
           }
+
+          console.log('User data:', data);
+          
           this.$store.dispatch('setUserAction', data);
 
         })
