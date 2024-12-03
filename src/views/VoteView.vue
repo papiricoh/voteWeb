@@ -45,11 +45,11 @@ import VoteButtons from '@/components/VoteButtons.vue';
       async connectWebSocket() {
         this.ws = new WebSocket(`${this.$store.getters.getWebsocketURL}/api/v1/web`);
 
-        this.ws.onopen = () => {
+        this.ws.onopen = async () => {
           //this.message = 'Conectado al WebSocket';
         };
 
-        this.ws.onmessage = (event) => {
+        this.ws.onmessage = async (event) => {
           //this.message = `Mensaje recibido: ${event.data}`;
           //console.log(event.data);
           const data = JSON.parse(event.data);
@@ -57,16 +57,21 @@ import VoteButtons from '@/components/VoteButtons.vue';
             this.session.forVotes = data.forVotes;
             this.session.againstVotes = data.againstVotes;
           }
-          console.log(this.session);
+          
+          if(data.type == 'disconnect') {
+            await this.ws.close();
+            await this.fetchSession();
+          }
           
         };
 
-        this.ws.onerror = (error) => {
+        this.ws.onerror = async (error) => {
           console.error('WebSocket error:', error);
         };
 
-        this.ws.onclose = () => {
-          //this.message = 'Conexión cerrada';
+        this.ws.onclose = async () => {
+          console.log('WebSocket cerrado');
+          
         };
       },
       getRemainingTime() {
