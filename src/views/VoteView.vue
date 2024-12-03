@@ -60,6 +60,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
           
           if(data.type == 'disconnect') {
             await this.ws.close();
+            this.sessionsList = [];
             await this.fetchSession();
           }
           
