@@ -3,8 +3,19 @@
     export default {
         data() {
             return {
-                vote: "abstention",
+                
             };
+        },
+        props: {
+            vote: {
+                type: String,
+                default: "abstention",
+            },
+        },
+        methods: {
+            changeVote(vote) {
+                this.$emit("change-vote", vote);
+            },
         },
         computed: {
             getFormattedVote() {
@@ -16,6 +27,7 @@
                     return "En Contra";
                 }
             },
+
         },
     };
 </script>
@@ -24,9 +36,9 @@
     <div class="vote_container_c">
         <div class="your_vote">Tu voto: {{getFormattedVote}}</div>
         <div class="vote_container">
-            <div class="vote_button vote_for" @click="vote = 'for'">A Favor</div>
-            <div class="vote_button vote_none" @click="vote = 'abstention'">Abstencion</div>
-            <div class="vote_button vote_against" @click="vote = 'against'">En Contra</div>
+            <div class="vote_button vote_for" @click="changeVote('for')">A Favor</div>
+            <div class="vote_button vote_none" @click="changeVote('abstention')">Abstencion</div>
+            <div class="vote_button vote_against" @click="changeVote('against')">En Contra</div>
         </div>
     </div>
 </template>

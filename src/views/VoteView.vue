@@ -13,7 +13,9 @@ import VoteButtons from '@/components/VoteButtons.vue';
         inSession: false,
         session: null,
 
-
+        
+        ws: null,
+        vote: 'abstention',
 
         remainingTime: '',
         //Admin / government member
@@ -35,8 +37,38 @@ import VoteButtons from '@/components/VoteButtons.vue';
     },
     beforeDestroy() {
       clearInterval(this.countIntervalId);
+      if (this.ws) {
+        this.ws.close();
+      }
     },
     methods: {
+      async connectWebSocket() {
+        this.ws = new WebSocket('ws://localhost:8080/api/v1/web');
+
+        this.ws.onopen = () => {
+          //this.message = 'Conectado al WebSocket';
+        };
+
+        this.ws.onmessage = (event) => {
+          //this.message = `Mensaje recibido: ${event.data}`;
+          console.log(event.data);
+          const data = JSON.parse(event.data);
+          if(data.type == 'vote') {
+            this.session.forVotes = data.forVotes;
+            this.session.againstVotes = data.againstVotes;
+          }
+          console.log(this.session);
+          
+        };
+
+        this.ws.onerror = (error) => {
+          console.error('WebSocket error:', error);
+        };
+
+        this.ws.onclose = () => {
+          //this.message = 'Conexión cerrada';
+        };
+      },
       getRemainingTime() {
         if (!this.session) {
           return '';
@@ -75,6 +107,8 @@ import VoteButtons from '@/components/VoteButtons.vue';
             if(this.$store.getters.getUser.perms >= this.sessionMinPerm) {
               await this.fetchSessionList();
             }
+            await this.connectWebSocket();
+
             this.loading = false;
           })
       },
@@ -117,7 +151,16 @@ import VoteButtons from '@/components/VoteButtons.vue';
               this.countIntervalId = setInterval(this.updateRemainingTime, 1000);
             }
             this.session = data;
+            await this.connectWebSocket();
           })
+      },
+      async changeVote(vote) {
+        this.vote = vote;
+        await this.ws.send(JSON.stringify({
+          user_id: this.$store.getters.getUser.id,
+          type: 'vote',
+          vote: vote
+        }));
       }
     },
   };
@@ -144,7 +187,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
     <VoteChart v-if="inSession" :total="session.seats" :favour="session.forVotes" :against="session.againstVotes"></VoteChart>
     <ParliamentChart></ParliamentChart>
 
-    <VoteButtons v-if="inSession"></VoteButtons>
+    <VoteButtons @change-vote="changeVote" :vote="vote" v-if="inSession"></VoteButtons>
   </main>
 </template>
 
