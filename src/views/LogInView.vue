@@ -12,6 +12,14 @@ import Cookies from 'js-cookie';
         //Login
         usename: '',
         password: '',
+
+        //Register
+        registerUsername: '',
+        registerPassword: '',
+        email: '',
+        first_name: '',
+        last_name: '',
+
       };
     },
     methods: {
@@ -29,12 +37,39 @@ import Cookies from 'js-cookie';
         }).then(response => response.json())
           .then(data => {
             console.log(data);
+            if(data.error){
+              this.$router.push('/login');
+              return;
+            }
             this.$store.dispatch('setUserAction', data);
             this.user = this.$store.getters.getUser;
 
             Cookies.set('authUser', data.username, { expires: 100, path: '' });
             Cookies.set('authToken', data.token, { expires: 100, path: '' });
             this.$router.push('/');
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            this.$router.push('/login');
+          });
+      },
+      async register() {
+        const postData = {
+          username: this.registerUsername,
+          email: this.email,
+          password: this.registerPassword,
+          first_name: this.first_name,
+          last_name: this.last_name
+        };
+        await fetch(`${this.$store.getters.getBaseURL}/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        }).then(response => response.json())
+          .then(data => {
+            this.loginMode = true;
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -50,7 +85,7 @@ import Cookies from 'js-cookie';
     <div v-if="loginMode" class="login_c">
       <div class="login_header">
         <div class="login_title">VoteWeb</div>
-        <input v-model="usename" type="text" placeholder="Usuario/Email">
+        <input v-model="usename" type="text" placeholder="Usuario">
         <input v-model="password" type="password" placeholder="Contraseña">
         <button @click="logIn()">LogIn</button>
       </div>
@@ -60,11 +95,12 @@ import Cookies from 'js-cookie';
     <div v-else class="login_c">
       <div class="login_header">
         <div class="login_title">VoteWeb</div>
-        <input type="text" placeholder="Usuario/Email">
-        <input type="text" placeholder="Nombre">
-        <input type="text" placeholder="Apellidos">
-        <input type="password" placeholder="Contraseña">
-        <button>Registrarse</button>
+        <input v-model="registerUsername" type="text" placeholder="Usuario">
+        <input v-model="email" type="email" placeholder="pepe@myuax.com">
+        <input v-model="first_name" type="text" placeholder="Nombre">
+        <input v-model="last_name" type="text" placeholder="Apellidos">
+        <input v-model="registerPassword" type="password" placeholder="Contraseña">
+        <button @click="register">Registrarse</button>
       </div>
       <button class="register_button" @click="loginMode = true">Acceder</button>
 

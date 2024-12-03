@@ -76,7 +76,7 @@
       <div v-for="article in newLawArticles" class="nl_section">
         <label>Nuevo articulo</label>
         <input type="text" v-model="article.title" :placeholder="'Articulo ' + article.id + ': Articulo muy importante'">
-        <textarea name="law_desc" v-model="article.content" id="" rows="8" maxlength="200" placeholder="Contenido de articulo"></textarea>
+        <textarea name="law_desc" v-model="article.content" id="" rows="8" placeholder="Contenido de articulo"></textarea>
       </div>
       <div class="nl_footer_buttons">
         <button @click="newLawArticles.push({ id: newLawArticles.length + 1, title: '', content: '' })">Nuevo articulo</button>
