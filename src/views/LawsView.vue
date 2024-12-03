@@ -67,7 +67,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             <div>Pendiente</div>
           </div>
           <div v-else-if="law.status == 'aproved'" class="law_status l_s_aproved">
-            <div>Aprovada</div>
+            <div>Aprobada</div>
           </div>
           <div v-else class="law_status l_s_regected">
             <div>Rechazada</div>

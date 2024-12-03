@@ -87,6 +87,8 @@
       },
       async submitSession() {
         let post_data = this.formatData();
+        console.log(post_data);
+        
         await fetch(`${this.$store.getters.getBaseURL}/session/new`, {
           method: 'POST',
           headers: {
