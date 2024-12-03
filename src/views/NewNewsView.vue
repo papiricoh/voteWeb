@@ -23,42 +23,45 @@
       };
     },
     async mounted() {
-      this.intervalId = await setInterval(async () => {
-        if (this.$store.getters.getUser) {
-          clearInterval(this.intervalId);
-          await this.fetchParties();
-        }
-      }, 40);
+      
     },
     methods: {
-      
+      async getSelectedAuthor() {
+        if (this.selectedAuthor == 'me') return this.nameJournalist;
+        if (this.selectedAuthor == 'partyLeader') return this.nameParty;
+        if (this.selectedAuthor == 'governmentMenber') return this.nameGovernment;
+        if (this.selectedAuthor == 'admin') return 'Admin';
+      },
+      async fetchParties() {
+        const postBody = {
+          title: this.newTitle,
+          subtitle: this.newSubtitle,
+          content: this.newContent,
+          author: await this.getSelectedAuthor(),
+          type: 'normal'
+        }
+        await fetch(`${this.$store.getters.getBaseURL}/news/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify(postBody)
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+
+          this.$router.push('/news');
+        })
+      }
     },
     computed: {
       canSubmit() {
         if (this.selectedAuthor == 'selected') return false;
         return true;
       },
-      async fetchParties() {
-        await fetch(`${this.$store.getters.getBaseURL}/news`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
-          },
-          body: null
-        }).then(response => response.json()).then(data => {
-          if (data.error) {
-            
-            return;
-          }
-          this.news = data;
-          for (let anew of this.news) {
-            anew.date = new Date(anew.date).toLocaleDateString();
-          }
-          this.loading = false;
-
-        })
-      }
     }
   };
 </script>
@@ -82,7 +85,7 @@
         <option v-if="$store.getters.getUser && $store.getters.getUser.perms >= 10" value="admin">Comunicado de Administrador (OOC)</option>
       </select>
     </div>
-    <button v-if="canSubmit" type="submit">Publicar</button>
+    <button v-if="canSubmit" type="submit" @click="fetchParties()">Publicar</button>
   </main>
 </template>
 
