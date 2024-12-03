@@ -29,6 +29,36 @@ import { ColorPicker } from "vue3-colorpicker";
         return this.party_name.length > 0 && this.party_label.length > 0 && this.pureColor != '#000001';
       }
     },
+    mounted() {
+      
+
+    },
+    methods: {
+      async createParty() {
+        await fetch(`${this.$store.getters.getBaseURL}/parties/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify({
+            name: this.party_name,
+            label: this.party_label,
+            ideology: this.ideology,
+            color: this.pureColor,
+            user_id: this.$store.getters.getUser.id,
+            logo: ''
+          })
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+          this.$router.push('/parties');
+        
+        })
+      }
+    },
   };
 </script>
 
@@ -52,7 +82,7 @@ import { ColorPicker } from "vue3-colorpicker";
       <color-picker isWidget v-model:pureColor="pureColor" v-model:gradientColor="gradientColor"/>
       <div class="party_logo" :style="'background-color: ' + pureColor + ';'">{{party_label}}</div>
     </div>
-    <button v-if="canCreate" class="new_party">Crear Partido</button>
+    <button v-if="canCreate" class="new_party" @click="createParty()">Crear Partido</button>
   </main>
 </template>
 

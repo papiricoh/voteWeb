@@ -93,7 +93,27 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           this.loading = false;
 
         })
-      }
+      },
+      async leaveParty() {
+        await fetch(`${this.$store.getters.getBaseURL}/parties/leave`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify({
+            user_id: this.$store.getters.getUser.id
+          })
+        }).then(async response => response.json()).then(async data => {
+          if (data.error) {
+            
+            return;
+          }
+          this.loading = true;
+          await this.fetchParties();
+
+        })
+      },
     },
     
   };
@@ -112,7 +132,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         </div>
         <div>{{own_party.members}} miembros</div>
         <div>Presidente: {{own_party.leader}}</div>
-        <div class="afiliate_button leave_button">Abandonar</div>
+        <div class="afiliate_button leave_button" @click="leaveParty()">Abandonar</div>
       </div>
       <div v-else class="new_party" @click="$router.push('/parties/new')">Crear un nuevo partido</div>
       <div v-if="!parties">No hay mas partidos</div>
