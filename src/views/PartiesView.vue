@@ -131,8 +131,9 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           <IdeologyMeter v-model="own_party.ideology"></IdeologyMeter>
         </div>
         <div>{{own_party.members}} miembros</div>
-        <div>Presidente: {{own_party.leader}}</div>
-        <div class="afiliate_button leave_button" @click="leaveParty()">Abandonar</div>
+        <div></div>
+        <div class="afiliate_button leave_button" v-if="own_party.leader == $store.getters.getUser.id" @click="leaveParty()">Abandonar</div>
+        <div class="afiliate_button leave_button" v-else @click="leaveParty()">Abandonar</div>
       </div>
       <div v-else class="new_party" @click="$router.push('/parties/new')">Crear un nuevo partido</div>
       <div v-if="!parties">No hay mas partidos</div>
@@ -143,7 +144,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           <IdeologyMeter v-model="party.ideology"></IdeologyMeter>
         </div>
         <div>{{party.members}} miembros</div>
-        <div>Presidente: {{party.leader}}</div>
+        <div></div>
         <div v-if="party.label !== 'IND'" class="afiliate_button">Solicitar afiliacion</div>
       </div>
     </div>
