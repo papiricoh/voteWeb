@@ -1,71 +1,50 @@
 <script setup>
 
+import LoadingComponent from '@/components/LoadingComponent.vue';
 </script>
 
 <script>
   export default {
     data() {
       return {
-        user: {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'johndoe',
-          perms: 4
-        },
-        news: [
-          {
-            title: 'Noticia 1',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: 'new'
-          },
-          {
-            title: 'Noticia 1',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: 'urgent'
-          },
-          {
-            title: 'Noticia 2',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: 'session'
-          },
-          {
-            title: 'Noticia 2 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: 'party'
-          },
-          {
-            title: 'Noticia 2 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: 'admin'
-          },
-          {
-            title: 'Noticia 2',
-            subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc',
-            date: '2021-10-10',
-            author: 'John Doe',
-            alert: null
-          }
-        ],
+        loading: true,
+        news: [],
+        
+
+
       };
     },
+
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          await this.fetchNews();
+        }
+      }, 1000);
+    },
     methods: {
-      
+      async fetchNews() {
+        await fetch(`${this.$store.getters.getBaseURL}/news`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+          this.news = data;
+          for (let anew of this.news) {
+            anew.date = new Date(anew.date).toLocaleDateString();
+          }
+          this.loading = false;
+
+        })
+      }
     },
   };
 </script>
@@ -78,13 +57,14 @@
       <div @click="$router.push('/news/new')" class="news_new_new">Nueva Noticia</div>
     </div>
 
-    <div class="news_list">
+    <LoadingComponent v-if="loading" style="align-self: center; margin-top: 6rem;"></LoadingComponent>
+    <div v-else class="news_list">
       <div v-for="anew in news" class="news_item">
-        <div v-if="anew.alert == 'new'" class="news_alert n_alert_new">Nuevo</div>
-        <div v-else-if="anew.alert == 'urgent'" class="news_alert n_alert_urgent">Importante</div>
-        <div v-else-if="anew.alert == 'session'" class="news_alert n_alert_session">Pleno</div>
-        <div v-else-if="anew.alert == 'party'" class="news_alert n_alert_party">Partido</div>
-        <div v-else-if="anew.alert == 'admin'" class="news_alert n_alert_admin">Admin (OOC)</div>
+        <div v-if="anew.type == 'new'" class="news_alert n_alert_new">Nuevo</div>
+        <div v-else-if="anew.type == 'urgent'" class="news_alert n_alert_urgent">Importante</div>
+        <div v-else-if="anew.type == 'session'" class="news_alert n_alert_session">Pleno</div>
+        <div v-else-if="anew.type == 'party'" class="news_alert n_alert_party">Partido</div>
+        <div v-else-if="anew.type == 'admin'" class="news_alert n_alert_admin">Admin (OOC)</div>
         <div class="news_item_header">
           <h2>{{ anew.title }}</h2>
           <p>{{ anew.subtitle }}</p>

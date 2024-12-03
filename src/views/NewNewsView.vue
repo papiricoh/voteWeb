@@ -7,19 +7,28 @@
   export default {
     data() {
       return {
-        user: {
-          firstName: 'John',
-          lastName: 'Doe',
-          username: 'johndoe',
-          perms: 10
-        },
         isJournalist: true,
+        nameJournalist: 'Periodista Anonimo',
         isPartyLeader: false,
+        nameParty: 'Partido Independiente',
         isGovernmentMenber: false,
+        nameGovernment: 'Gobierno de la Nacion',
 
+        newTitle: '',
+        newSubtitle: '',
+        newContent: '',
         selectedAuthor: 'selected'
         
+
       };
+    },
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          await this.fetchParties();
+        }
+      }, 40);
     },
     methods: {
       
@@ -28,6 +37,27 @@
       canSubmit() {
         if (this.selectedAuthor == 'selected') return false;
         return true;
+      },
+      async fetchParties() {
+        await fetch(`${this.$store.getters.getBaseURL}/news`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json()).then(data => {
+          if (data.error) {
+            
+            return;
+          }
+          this.news = data;
+          for (let anew of this.news) {
+            anew.date = new Date(anew.date).toLocaleDateString();
+          }
+          this.loading = false;
+
+        })
       }
     }
   };
@@ -37,19 +67,19 @@
   <main>
     <h1>Nueva Noticia</h1>
     <label for="title">Titulo</label>
-    <input type="text" id="title" name="title" placeholder="Titulo de la noticia" maxlength="50">
+    <input v-model="newTitle" type="text" id="title" name="title" placeholder="Titulo de la noticia" maxlength="50">
     <label for="subtitle">Subtitulo</label>
-    <input type="text" id="subtitle" name="subtitle" placeholder="Subtitulo de la noticia" maxlength="120">
+    <input v-model="newSubtitle" type="text" id="subtitle" name="subtitle" placeholder="Subtitulo de la noticia" maxlength="120">
     <label for="content">Contenido</label>
-    <textarea id="content" name="content" placeholder="Contenido de la noticia"></textarea>
+    <textarea v-model="newContent" id="content" name="content" placeholder="Contenido de la noticia"></textarea>
     <div class="nn_author">
       <label for="author">Publicar como:</label>
       <select v-model="selectedAuthor" id="author" name="author">
         <option disabled value="selected">Seleciona autor</option>
-        <option :disabled="isJournalist" value="me">Yo (Como Periodista)</option>
-        <option :disabled="isPartyLeader" value="partyLeader">Lider de partido (Comunicado de partido)</option>
-        <option :disabled="isGovernmentMenber" value="governmentMenber">Miembro de Gobierno (Nota de prensa)</option>
-        <option v-if="user.perms >= 10" value="admin">Comunicado de Administrador (OOC)</option>
+        <option :disabled="!isJournalist" value="me">Yo (Como Periodista)</option>
+        <option :disabled="!isPartyLeader" value="partyLeader">Lider de partido (Comunicado de partido)</option>
+        <option :disabled="!isGovernmentMenber" value="governmentMenber">Miembro de Gobierno (Nota de prensa)</option>
+        <option v-if="$store.getters.getUser && $store.getters.getUser.perms >= 10" value="admin">Comunicado de Administrador (OOC)</option>
       </select>
     </div>
     <button v-if="canSubmit" type="submit">Publicar</button>
