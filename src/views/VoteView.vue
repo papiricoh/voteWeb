@@ -43,7 +43,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
     },
     methods: {
       async connectWebSocket() {
-        this.ws = new WebSocket('ws://localhost:8080/api/v1/web');
+        this.ws = new WebSocket(`${this.$store.getters.getWebsocketURL}/api/v1/web`);
 
         this.ws.onopen = () => {
           //this.message = 'Conectado al WebSocket';
@@ -51,7 +51,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
 
         this.ws.onmessage = (event) => {
           //this.message = `Mensaje recibido: ${event.data}`;
-          console.log(event.data);
+          //console.log(event.data);
           const data = JSON.parse(event.data);
           if(data.type == 'vote') {
             this.session.forVotes = data.forVotes;

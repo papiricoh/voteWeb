@@ -6,6 +6,7 @@ const store = createStore({
         rootURL: "http://localhost:8080",
         baseURL: "http://localhost:8080/api/v1",
         uploadURL: "http://localhost:8080/upload",
+        websocketURL: "ws://localhost:8080",
         user: null
     },
     mutations: {
@@ -29,7 +30,8 @@ const store = createStore({
         getBaseURL: state => state.baseURL,
         getUploadURL: state => state.uploadURL,
         getRootURL: state => state.rootURL,
-        getUser: state => state.user
+        getUser: state => state.user,
+        getWebsocketURL: state => state.websocketURL
     }
 });
 
