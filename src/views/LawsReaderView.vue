@@ -58,7 +58,7 @@
         <div>{{readingLaw.description}}</div>
         <div v-for="article in readingLaw.articles">
           <div class="lr_article_title">{{article.title}}</div>
-          <div>{{article.content}}</div>
+          <div style="white-space: pre-wrap;">{{article.content}}</div>
         </div>
         <div class="lr_footer">
           <div v-if="readingLaw.status == 'signed'">
