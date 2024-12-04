@@ -65,7 +65,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           clearInterval(this.intervalId);
           await this.fetchParties();
         }
-      }, 400);
+      }, 1000);
     },
     methods: {
       async fetchParties() {
@@ -76,11 +76,12 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
           },
           body: null
-        }).then(response => response.json()).then(data => {
+        }).then(response => response.json()).then(async data => {
           if (data.error) {
             
             return;
           }
+          await this.fetchUser();
           var newParties = [];
           for (let party of data) {
             if (party.id === this.$store.getters.getUser.party.id && party.label !== 'IND') {
@@ -109,11 +110,35 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             
             return;
           }
-          this.loading = true;
-          await this.fetchParties();
 
+          
+          this.loading = true;
+          this.own_party = null;
+          await this.fetchParties();
         })
       },
+      async fetchUser() {
+        const postData = {
+          username: this.$store.getters.getUser.username,
+          token: this.$store.getters.getUser.token
+        };
+        await fetch(`${this.$store.getters.getBaseURL}/login/token`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        }).then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              this.$router.push('/login');
+              return;
+            }
+            
+            this.$store.dispatch('setUserAction', data);
+
+          })
+      }
     },
     
   };
