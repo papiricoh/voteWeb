@@ -40,7 +40,29 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
             this.loading = false;
 
           })
-      }
+      },
+      async signLaw(law_id) {
+        await fetch(`${this.$store.getters.getBaseURL}/laws/sign`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: JSON.stringify({
+            law_id: law_id,
+            user_id: this.$store.getters.getUser.id
+          })
+        }).then(response => response.json())
+          .then(async data => {
+            if (data.error) {
+              
+              return;
+            }
+            this.loading = true;
+            await this.fetchLaws();
+
+          })
+      },
     },
   };
 </script>
@@ -72,7 +94,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           <div v-else class="law_status l_s_regected">
             <div>Rechazada</div>
           </div>
-          <button v-if="$store.getters.getUser.perms > 3 && law.status == 'aproved'">Firmar</button>
+          <button v-if="$store.getters.getUser.perms > 3 && law.status == 'aproved'" @click="signLaw(law.id)">Firmar</button>
         </div>
       </div>
     </div>
