@@ -110,7 +110,35 @@
       };
     },
     methods: {
-      
+      async getGovernment() {
+        await fetch(`${this.$store.getters.getBaseURL}/government`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Basic ' + btoa(await this.$store.getters.getUser.id + ':' + await this.$store.getters.getUser.token)
+          },
+          body: null
+        }).then(response => response.json())
+        .then(async data => {
+          if (data.error) {
+            
+            return;
+          }
+          this.government.president = data[0];
+          delete data[0];
+          this.government.members = data;
+          this.loading = false;
+
+        })
+      },
+    },
+    async mounted() {
+      this.intervalId = await setInterval(async () => {
+        if (this.$store.getters.getUser) {
+          clearInterval(this.intervalId);
+          await this.getGovernment();
+        }
+      }, 400);
     },
   };
 </script>
