@@ -11,6 +11,7 @@ import NewVoteView from '@/views/NewVoteView.vue'
 import NewNewsView from '@/views/NewNewsView.vue'
 import NewPartyView from '@/views/NewPartyView.vue'
 import LawsReaderView from '@/views/LawsReaderView.vue'
+import NewsReaderView from '@/views/NewsReaderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,12 @@ const router = createRouter({
       path: '/news/new',
       name: 'NewNews',
       component: NewNewsView,
+    },
+    {
+      path: '/news/:id',
+      name: 'newsReader',
+      component: NewsReaderView,
+      props: true
     },
     {
       path: '/parties',

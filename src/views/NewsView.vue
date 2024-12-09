@@ -21,7 +21,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           clearInterval(this.intervalId);
           await this.fetchNews();
         }
-      }, 1000);
+      }, 20);
     },
     methods: {
       async fetchNews() {
@@ -59,7 +59,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 
     <LoadingComponent v-if="loading" style="align-self: center; margin-top: 6rem;"></LoadingComponent>
     <div v-else class="news_list">
-      <div v-for="anew in news" class="news_item">
+      <div v-for="anew in news" @click="$router.push(`/news/${anew.id}`)" class="news_item">
         <div v-if="anew.type == 'new'" class="news_alert n_alert_new">Nuevo</div>
         <div v-else-if="anew.type == 'urgent'" class="news_alert n_alert_urgent">Importante</div>
         <div v-else-if="anew.type == 'session'" class="news_alert n_alert_session">Pleno</div>
