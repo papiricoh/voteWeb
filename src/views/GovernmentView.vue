@@ -1,4 +1,6 @@
 <script setup>
+import LoadingComponent from '@/components/LoadingComponent.vue';
+
 
 </script>
 
@@ -6,6 +8,7 @@
   export default {
     data() {
       return {
+        loading: true,
         user: {
           id: 1,
           firstName: 'John',
@@ -14,98 +17,8 @@
           perms: 4
         },
         government: {
-          president: {
-            id: 1,
-            first_name: 'John',
-            last_name: 'Doe',
-            username: 'johndoe',
-            role: 'President',
-            party: 'Republican',
-            label: 'REP',
-            color: '#dc3545'
-          },
-          members: [
-            {
-              id: 2,
-              first_name: 'Jane',
-              last_name: 'Doe',
-              username: 'janedoe',
-              role: 'Vice President',
-              party: 'Democratic',
-              label: 'DEM',
-              color: '#007bff'
-            },
-            {
-              id: 3,
-              first_name: 'Alice',
-              last_name: 'Doe',
-              username: 'alicedoe',
-              role: 'Secretary of State',
-              party: 'Republican',
-              label: 'REP',
-              color: '#dc3545'
-            },
-            {
-              id: 4,
-              first_name: 'Bob',
-              last_name: 'Doe',
-              username: 'bobdoe',
-              role: 'Secretary of Defense',
-              party: 'Democratic',
-              label: 'DEM',
-              color: '#007bff'
-            },
-            {
-              id: 5,
-              first_name: 'Charlie',
-              last_name: 'Doe',
-              username: 'charliedoe',
-              role: 'Secretary of Treasury',
-              party: 'Republican',
-              label: 'REP',
-              color: '#dc3545'
-            },
-            {
-              id: 6,
-              first_name: 'David',
-              last_name: 'Doe',
-              username: 'daviddoe',
-              role: 'Secretary of Education',
-              party: 'Democratic',
-              label: 'DEM',
-              color: '#007bff'
-            },
-            {
-              id: 7,
-              first_name: 'Eve',
-              last_name: 'Doe',
-              username: 'evedoe',
-              role: 'Secretary of Health',
-              party: 'Republican',
-              label: 'REP',
-              color: '#dc3545'
-            },
-            {
-              id: 8,
-              first_name: 'Frank',
-              last_name: 'Doe',
-              username: 'frankdoe',
-              role: 'Secretary of Agriculture',
-              party: 'Democratic',
-              label: 'DEMDEM',
-              color: '#007bff'
-            },
-            {
-              first_name: 'Grace',
-              last_name: 'Doe',
-              username: 'gracedoe',
-              role: 'Secretary of Commerce',
-              party: 'Republican',
-              label: 'REP',
-              color: '#dc3545'
-            },
-            
-          ]
+          president: null,
+          members: []
         }
       };
     },
@@ -124,8 +37,10 @@
             
             return;
           }
+
           this.government.president = data[0];
-          delete data[0];
+          data.shift();
+          
           this.government.members = data;
           this.loading = false;
 
@@ -144,7 +59,7 @@
 </script>
 
 <template>
-  <main>
+  <main v-if="!loading">
     <h1>Gobierno e Instituciones</h1>
     <div class="gov_section">
       <div>Presidente</div>
@@ -172,6 +87,9 @@
       <!-- <div class="administrate_gov" v-if="member.id == user.id">Administrar</div> -->
     </div>
     
+  </main>
+  <main v-else>
+    <LoadingComponent class="l_comp"  />
   </main>
 </template>
 
@@ -239,6 +157,11 @@ main {
 }
 .administrate_gov:hover {
   background-color: var(--cerulean);
+}
+
+.l_comp {
+  align-self: center;
+  margin-top: 30vh;
 }
 
 </style>
