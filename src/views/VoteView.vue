@@ -33,7 +33,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
           clearInterval(this.intervalId);
           await this.fetchSession();
         }
-      }, 400);
+      }, 20);
     },
     beforeDestroy() {
       clearInterval(this.countIntervalId);
