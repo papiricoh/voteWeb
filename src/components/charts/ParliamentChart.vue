@@ -9,7 +9,7 @@
   import HighchartsVue from 'highcharts-vue';
   import ItemSeries from 'highcharts/modules/item-series';
 
-  ItemSeries(Highcharts);
+  // ItemSeries(Highcharts);
 
   export default {
     name: 'ParliamentChart',
