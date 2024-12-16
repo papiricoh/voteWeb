@@ -1,4 +1,5 @@
 <script setup>
+
 import LoadingComponent from '@/components/LoadingComponent.vue';
 
 
@@ -61,6 +62,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 <template>
   <main v-if="!loading">
     <h1>Gobierno e Instituciones</h1>
+
     <div class="gov_section">
       <div>Presidente</div>
       <div>

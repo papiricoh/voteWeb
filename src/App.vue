@@ -56,14 +56,14 @@ import Cookies from 'js-cookie';
 
       <nav>
         <div class="nav_section">
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/mail">Buzon</RouterLink>
-          <RouterLink to="/news">Noticias</RouterLink>
-          <RouterLink to="/vote">Votacion</RouterLink>
-          <RouterLink to="/laws">Leyes</RouterLink>
-          <RouterLink to="/parties">Partidos</RouterLink>
-          <RouterLink to="/courts">Tribunales</RouterLink>
-          <RouterLink to="/government">Gobierno</RouterLink>
+          <RouterLink to="/"><font-awesome-icon :icon="['fas', 'house']" /></RouterLink>
+          <RouterLink to="/mail"><font-awesome-icon :icon="['fas', 'envelopes-bulk']" /></RouterLink>
+          <RouterLink to="/news"><font-awesome-icon :icon="['fas', 'newspaper']" /></RouterLink>
+          <RouterLink to="/vote"><font-awesome-icon :icon="['fas', 'check-to-slot']" /></RouterLink>
+          <RouterLink to="/laws"><font-awesome-icon :icon="['fas', 'file-pen']" /></RouterLink>
+          <RouterLink to="/parties"><font-awesome-icon :icon="['fas', 'handshake-angle']" /></RouterLink>
+          <RouterLink to="/courts"><font-awesome-icon :icon="['fas', 'scale-unbalanced']" /></RouterLink>
+          <RouterLink to="/government"><font-awesome-icon :icon="['fas', 'landmark-flag']" /></RouterLink>
 
         </div>
         
@@ -89,9 +89,10 @@ nav {
   flex-direction: column;
   gap: 1rem;
   height: 100vh;
-  background-color: var(--rich-black);
+  background-color: var(--prussian-blue);
   position: fixed;
-  width: 16vw;
+  width: 8vw;
+  font-size: 2.4vw;
 }
 
 .nav_section {
@@ -99,6 +100,10 @@ nav {
   justify-content: center;
   width: 100%;
   flex-direction: column;
+}
+
+main {
+  margin-left: 8vw !important;
 }
 
 .nav_section > a {
