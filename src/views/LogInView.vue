@@ -121,6 +121,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 0vw !important;
 }
 
 .login_c {

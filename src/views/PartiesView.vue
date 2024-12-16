@@ -65,7 +65,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           clearInterval(this.intervalId);
           await this.fetchParties();
         }
-      }, 1000);
+      }, 20);
     },
     methods: {
       async fetchParties() {
