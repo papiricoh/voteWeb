@@ -59,8 +59,8 @@ import StockChart from '@/components/charts/StockChart.vue';
           <div class="company_logo">{{index.label}}</div>
           <div class="stock_company_details">
             <div>{{index.name}}</div>
-            <div>{{index.value.toLocaleString()}}€</div>
-            <div>{{index.marketCap.toLocaleString()}}€</div>
+            <div>{{index.value.toLocaleString()}}<div class="currency">EUR</div></div>
+            <div>{{index.marketCap.toLocaleString()}}<div class="currency">EUR</div></div>
             <div :style="getPositiveStyle(index.variation)">{{index.variation * 100}}%</div>
             
           </div>
@@ -71,8 +71,8 @@ import StockChart from '@/components/charts/StockChart.vue';
             <div :style="company.color ? 'background-color: ' + company.color + ';' : ''" class="company_logo">{{company.label}}</div>
             <div class="stock_company_details">
               <div>{{company.name}}</div>
-              <div>{{company.value.toLocaleString()}}€</div>
-              <div>{{company.marketCap.toLocaleString()}}€</div>
+              <div>{{company.value.toLocaleString()}}<div class="currency">EUR</div></div>
+              <div>{{company.marketCap.toLocaleString()}}<div class="currency">EUR</div></div>
               <div :style="getPositiveStyle(company.variation)">{{company.variation * 100}}%</div>
               
             </div>
@@ -149,8 +149,20 @@ main {
   font-size: 1.1rem;
 }
 
-.stock_company_details>div:nth-child(2n) {
+.stock_company_details>div {
+  display: flex;
   text-align: right;
+  align-items: end;
+  gap: .2rem;
+}
+
+.stock_company_details>div:nth-child(2n) {
+  align-self: end;
+  justify-self: end;
+  display: flex;
+  text-align: right;
+  align-items: end;
+  gap: .2rem;
 }
 .company_logo {
   background-color: var(--cerulean);
@@ -161,5 +173,10 @@ main {
   height: 70px;
   aspect-ratio: 1;
   border-radius: .4rem;
+}
+.currency {
+  font-size: .8rem;
+  font-weight: normal;
+
 }
 </style>
