@@ -122,6 +122,7 @@ main {
   cursor: pointer;
   align-items: center;
   border-radius: .4rem;
+  transition: .2s;
 }
 .stock_company>div:first-child {
   font-weight: bold;
