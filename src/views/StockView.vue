@@ -1,7 +1,6 @@
 <script setup>
 import StockChart from '@/components/charts/StockChart.vue';
 
-
 </script>
 
 <script>
