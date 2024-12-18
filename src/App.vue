@@ -64,6 +64,7 @@ import Cookies from 'js-cookie';
           <RouterLink to="/parties"><font-awesome-icon :icon="['fas', 'handshake-angle']" /></RouterLink>
           <RouterLink to="/courts"><font-awesome-icon :icon="['fas', 'scale-unbalanced']" /></RouterLink>
           <RouterLink to="/government"><font-awesome-icon :icon="['fas', 'landmark-flag']" /></RouterLink>
+          <RouterLink to="/stock"><font-awesome-icon :icon="['fas', 'line-chart']" /></RouterLink>
 
         </div>
         
