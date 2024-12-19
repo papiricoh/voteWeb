@@ -12,6 +12,14 @@ import StockChart from '@/components/charts/StockChart.vue';
           avariable: 1200,
           value: 1232000,
         },
+        company: {
+          label: 'APPL',
+          name: 'Apple',
+          value: 100.32,
+          marketCap: 1000000,
+          variation: 0.102,
+          color: 'black'
+        }
       };
     },
     props: {
@@ -50,7 +58,14 @@ import StockChart from '@/components/charts/StockChart.vue';
   <main>
     <h1 style="align-self: flex-start;">{{id}}</h1>
     <div class="stock_main">
-      <StockChart />
+      <div class="stock_chart">
+        <StockChart />
+
+      </div>
+      <div class="stock_data">
+        <div style="font-size: 1.4rem; font-weight: bold;">{{company.label}} - {{company.name}}</div>
+        <div>ds</div>
+      </div>
     </div>
   </main>
 </template>
@@ -71,6 +86,18 @@ main {
   display: grid;
   grid-template-columns: 4fr 2fr;
   gap: 1rem;
+}
+
+.stock_data, .stock_chart {
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.15);
+  border-radius: .4rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 </style>

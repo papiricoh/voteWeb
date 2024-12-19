@@ -14,7 +14,7 @@ let chartInstance = null;
 // Definimos múltiples líneas con valores y colores únicos
 const markLines = [
   { price: 110, label: 'Precio Actual', color: 'red', style: 'solid' },
-  { price: 115, label: 'Resistencia', color: 'blue', style: 'dashed' },
+  { price: 140, label: 'Resistencia', color: 'blue', style: 'dashed' },
   { price: 100, label: 'Soporte', color: 'green', style: 'dotted' },
   { price: 105, label: 'Objetivo', color: 'orange', style: 'solid' },
 ];
@@ -25,7 +25,7 @@ onMounted(() => {
 
     chartInstance.setOption({
       title: {
-        text: 'Gráfico con Múltiples Líneas y Colores',
+        text: '',
       },
       tooltip: {
         trigger: 'axis',
@@ -35,7 +35,7 @@ onMounted(() => {
       },
       xAxis: {
         type: 'category',
-        data: ['2024-06-01', '2024-06-02', '2024-06-03'],
+        data: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04'],
         boundaryGap: true,
       },
       yAxis: {
@@ -45,10 +45,17 @@ onMounted(() => {
       series: [
         {
           type: 'candlestick',
+          itemStyle: {
+            color: "green",
+            color0: "red",
+            borderColor: undefined,
+            borderColor0: undefined
+          },
           data: [
             [100, 110, 95, 105],
             [105, 120, 102, 115],
             [115, 125, 110, 120],
+            [125, 105, 90, 140],
           ],
           markLine: {
             symbol: 'none',
