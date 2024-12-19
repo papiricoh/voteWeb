@@ -1,4 +1,5 @@
 <script setup>
+import PieChart from '@/components/charts/PieChart.vue';
 import StockChart from '@/components/charts/StockChart.vue';
 
 </script>
@@ -7,12 +8,16 @@ import StockChart from '@/components/charts/StockChart.vue';
   export default {
     data() {
       return {
+        wallet: {
+          avariable: 1200,
+          value: 1232000,
+        },
         index: {
           label: 'UX34',
           name: 'UAX-34',
           value: 100.32,
           variation: 0.102,
-          marketCap: 1000000
+          marketCap: 10232303214000
         },
         companies: [
           {
@@ -27,7 +32,7 @@ import StockChart from '@/components/charts/StockChart.vue';
             label: 'NVDA',
             name: 'Nvidia',
             value: 130.32,
-            marketCap: 1200000,
+            marketCap: 1202000,
             variation: -0.102,
           }
         ]
@@ -40,7 +45,21 @@ import StockChart from '@/components/charts/StockChart.vue';
         }else {
           return "color: red";
         }
-      } 
+      },
+      formatCurrency(value) {
+        if (typeof value !== 'number') {
+          return value;
+        }else if(value >= 1000000000000) {
+          return (value / 1000000000000).toFixed(2).toLocaleString() + ' T';
+        }else if(value >= 1000000000) {
+          return (value / 1000000000).toFixed(2).toLocaleString() + ' B';
+        }else if(value >= 1000000) {
+          return (value / 1000000).toFixed(2).toLocaleString() + ' M';
+        }else if(value >= 1000) {
+          return (value / 1000).toFixed(2).toLocaleString() + ' k';
+        }
+        return value.toFixed(2).toLocaleString();
+      }
     },
     computed: {
 
@@ -52,33 +71,44 @@ import StockChart from '@/components/charts/StockChart.vue';
   <main>
     <h1 style="align-self: flex-start;">Bolsa</h1>
     <!-- <StockChart /> -->
-     <div class="stock_container">
+    <div class="stock_container">
       <div class="stock_companies_container">
         <h2>Indices</h2>
-        <div class="stock_company">
+        <div @click="$router.push('/stock/index/' + index.label)" class="stock_company">
           <div class="company_logo">{{index.label}}</div>
           <div class="stock_company_details">
             <div>{{index.name}}</div>
             <div>{{index.value.toLocaleString()}}<div class="currency">EUR</div></div>
-            <div>{{index.marketCap.toLocaleString()}}<div class="currency">EUR</div></div>
+            <div>{{formatCurrency(index.marketCap)}}<div class="currency">EUR</div></div>
             <div :style="getPositiveStyle(index.variation)">{{index.variation * 100}}%</div>
             
           </div>
         </div>
         <h2>Empresas</h2>
         <div class="stock_companies">
-          <div v-for="company in companies" class="stock_company">
+          <div @click="$router.push('/stock/' + company.label)" v-for="company in companies" class="stock_company">
             <div :style="company.color ? 'background-color: ' + company.color + ';' : ''" class="company_logo">{{company.label}}</div>
             <div class="stock_company_details">
               <div>{{company.name}}</div>
               <div>{{company.value.toLocaleString()}}<div class="currency">EUR</div></div>
-              <div>{{company.marketCap.toLocaleString()}}<div class="currency">EUR</div></div>
+              <div>{{formatCurrency(company.marketCap)}}<div class="currency">EUR</div></div>
               <div :style="getPositiveStyle(company.variation)">{{company.variation * 100}}%</div>
               
             </div>
           </div>
         </div>
 
+      </div>
+      <div class="wallet_container">
+        <h2>Wallet</h2>
+        <div class="global_pos_container">
+          <div class="pos_title">Disponible:</div>
+          <div class="wallet_value">{{wallet.avariable.toLocaleString()}} EUR</div>
+          <div class="pos_title">Valor total:</div>
+          <div class="wallet_value">{{wallet.value.toLocaleString()}} EUR</div>
+        </div>
+        <h4>Resumen</h4>
+        <PieChart />
       </div>
      </div>
   </main>
@@ -97,9 +127,9 @@ main {
 
 .stock_container {
   display: grid;
-  gap: 1rem;
+  gap: 14rem;
   width: 100%;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 30vw 2fr;
 }
 .stock_companies_container {
   display: flex;
@@ -155,6 +185,12 @@ main {
   align-items: end;
   gap: .2rem;
 }
+.currency_container {
+  display: flex;
+  text-align: right;
+  align-items: end;
+  gap: .2rem;
+}
 
 .stock_company_details>div:nth-child(2n) {
   align-self: end;
@@ -178,5 +214,48 @@ main {
   font-size: .8rem;
   font-weight: normal;
 
+}
+.currency_wallet {
+  font-size: 1rem;
+
+}
+.wallet_container {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--picton-blue);
+  color: white;
+  border-radius: .4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wallet_value {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: right;
+
+  display: flex;
+  text-align: right;
+  align-items: end;
+  gap: .2rem;
+  align-self: center;
+}
+
+.global_pos_container {
+  display: grid;
+  grid-template-columns: 1fr 3.5fr;
+  gap: 1rem;
+  align-items: center;
+}
+.global_pos_container>div:nth-child(2n) {
+  justify-self: end;
+}
+
+.pos_title {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 </style>
