@@ -35,7 +35,7 @@ import VoteButtons from '@/components/VoteButtons.vue';
         }
       }, 20);
     },
-    beforeDestroy() {
+    beforeUnmount() {
       clearInterval(this.countIntervalId);
       if (this.ws) {
         this.ws.close();
