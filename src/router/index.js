@@ -14,6 +14,7 @@ import LawsReaderView from '@/views/LawsReaderView.vue'
 import NewsReaderView from '@/views/NewsReaderView.vue'
 import StockView from '@/views/StockView.vue'
 import StockDetailsView from '@/views/StockDetailsView.vue'
+import MailView from '@/views/MailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -95,6 +96,11 @@ const router = createRouter({
       name: 'StocksDetail',
       component: StockDetailsView,
       props: true
+    },
+    {
+      path: '/mail',
+      name: 'Mail',
+      component: MailView,
     },
   ],
 })
