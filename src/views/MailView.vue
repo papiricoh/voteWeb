@@ -9,6 +9,38 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
       return {
         loading: false,
         
+        mails: [
+          {
+            id: 1,
+            subject: 'Subject 1',
+            content: 'Content 1, dhwaihdiwahfihawihfiawhfawgiofg\nawoiugfoawgifgawigfioawigfgae\nuhfuagjfgasgfljgasjfgljsagfljasg\njfgajsgfjagsjfglajsgfjg',
+            date: '2021-10-10',
+            state: 'unread',
+          },
+          {
+            id: 2,
+            subject: 'Subject 2',
+            content: 'Content 2',
+            date: '2021-10-10',
+            state: 'read',
+          },
+          {
+            id: 3,
+            subject: 'Subject 3',
+            content: 'Content 3',
+            date: '2021-10-10',
+            state: 'unread',
+          },
+          {
+            id: 4,
+            subject: 'Subject 4',
+            content: 'Content 4',
+            date: '2021-10-10',
+            state: 'read',
+          },
+        ],
+
+        currentMail: null,
       };
     },
     async mounted() {
@@ -56,10 +88,36 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
 
 <template>
   <main>
-    <h1>Correo</h1>
     <LoadingComponent class="loading" v-if="loading"></LoadingComponent>
     <div v-else class="mail_container">
-      
+      <div class="mail_list">
+        <div class="search_bar_c">
+          <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+          <input class="search_bar" placeholder="Buscar correo"></input>
+        </div>
+        <hr>
+        <div v-for="mail in mails" class="mail_resume" :style="mail.state == 'read' ? 'color: rgba(0,0,0, 0.65)' : ''" @click="currentMail = mail">
+          <div class="mail_subject">{{mail.subject}}</div>
+          <div>{{mail.content.substring(0, 40)}}</div>
+          <div class="mail_resume_footer">
+            <div>{{mail.date}}</div>
+            <div v-if="mail.state == 'read'"><font-awesome-icon :icon="['fas', 'envelope-open']" size="xl"/></div>
+            <div v-else><font-awesome-icon :icon="['fas', 'envelope']" size="xl"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="mail_content">
+        <div v-if="currentMail">
+          <div>{{currentMail.subject}}</div>
+          <div>{{currentMail.content}}</div>
+        </div>
+        <div v-else class="mail_content_empty">
+          <div>Selecciona un correo</div>
+          <font-awesome-icon :icon="['fas', 'envelope-open']" size="xl"/>
+
+        </div>
+
+      </div>
     </div>
   </main>
 </template>
@@ -80,6 +138,85 @@ main {
   grid-template-columns: 1fr 4fr;
 }
 
+.mail_list {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
 
+.search_bar_c {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.search_bar {
+  border: none;
+  background-color: transparent;
+  width: 90%;
+  border-bottom: var(--picton-blue);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.461);
+}
+
+.search_bar:focus-visible {
+  outline: none;
+  border-bottom: 1px solid var(--rich-black);
+}
+
+hr {
+  margin: 0;
+}
+
+.mail_resume {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.461);
+  cursor: pointer;
+  transition: .4s;
+}
+
+.mail_resume:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.mail_resume:active {
+  background-color: rgba(128, 128, 128, 0);
+}
+
+.mail_container:last-child {
+  border-bottom: none;
+}
+
+.mail_resume_footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mail_subject {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.mail_content {
+  box-sizing: border-box;
+}
+
+.mail_content_empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-weight: bolder;
+  height: 90vh;
+}
 
 </style>
