@@ -13,30 +13,10 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           {
             id: 1,
             subject: 'Subject 1',
+            sender: 'John Doe',
             content: 'Content 1, dhwaihdiwahfihawihfiawhfawgiofg\nawoiugfoawgifgawigfioawigfgae\nuhfuagjfgasgfljgasjfgljsagfljasg\njfgajsgfjagsjfglajsgfjg',
             date: '2021-10-10',
             state: 'unread',
-          },
-          {
-            id: 2,
-            subject: 'Subject 2',
-            content: 'Content 2',
-            date: '2021-10-10',
-            state: 'read',
-          },
-          {
-            id: 3,
-            subject: 'Subject 3',
-            content: 'Content 3',
-            date: '2021-10-10',
-            state: 'unread',
-          },
-          {
-            id: 4,
-            subject: 'Subject 4',
-            content: 'Content 4',
-            date: '2021-10-10',
-            state: 'read',
           },
         ],
 
@@ -98,7 +78,7 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
         <hr>
         <div v-for="mail in mails" class="mail_resume" :style="mail.state == 'read' ? 'color: rgba(0,0,0, 0.65)' : ''" @click="currentMail = mail">
           <div class="mail_subject">{{mail.subject}}</div>
-          <div>{{mail.content.substring(0, 40)}}</div>
+          <div>{{mail.sender}}</div>
           <div class="mail_resume_footer">
             <div>{{mail.date}}</div>
             <div v-if="mail.state == 'read'"><font-awesome-icon :icon="['fas', 'envelope-open']" size="xl"/></div>
@@ -106,9 +86,9 @@ import LoadingComponent from '@/components/LoadingComponent.vue';
           </div>
         </div>
       </div>
-      <div class="mail_content">
+      <div class="mail_content">      
         <div v-if="currentMail">
-          <div>{{currentMail.subject}}</div>
+          <div class="mail_content_subject">{{currentMail.subject}}</div>
           <div>{{currentMail.content}}</div>
         </div>
         <div v-else class="mail_content_empty">
@@ -143,6 +123,7 @@ main {
   flex-direction: column;
   box-sizing: border-box;
   overflow-y: scroll;
+  height: 96vh;
 }
 
 .search_bar_c {
@@ -208,6 +189,9 @@ hr {
 }
 .mail_content {
   box-sizing: border-box;
+  padding: 0 .6rem;
+  overflow-y: scroll;
+  height: 96vh;
 }
 
 .mail_content_empty {
@@ -217,6 +201,11 @@ hr {
   gap: 1rem;
   font-weight: bolder;
   height: 90vh;
+}
+
+.mail_content_subject {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 </style>
